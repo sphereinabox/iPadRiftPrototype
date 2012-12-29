@@ -27,51 +27,53 @@ enum
     NUM_ATTRIBUTES
 };
 
-GLfloat gCubeVertexData[216] = 
+GLfloat gCubeVertexData[288] =
 {
     // Data layout for each line below is:
-    // positionX, positionY, positionZ,     normalX, normalY, normalZ,
-    0.5f, -0.5f, -0.5f,        1.0f, 0.0f, 0.0f,
-    0.5f, 0.5f, -0.5f,         1.0f, 0.0f, 0.0f,
-    0.5f, -0.5f, 0.5f,         1.0f, 0.0f, 0.0f,
-    0.5f, -0.5f, 0.5f,         1.0f, 0.0f, 0.0f,
-    0.5f, 0.5f, -0.5f,          1.0f, 0.0f, 0.0f,
-    0.5f, 0.5f, 0.5f,         1.0f, 0.0f, 0.0f,
+    // positionX, positionY, positionZ,
+    //                     normalX, normalY, normalZ,
+    //                                                 U,   V,
+    0.5f, -0.5f, -0.5f,        1.0f, 0.0f, 0.0f,     0.0f, 0.0f,
+    0.5f, 0.5f, -0.5f,         1.0f, 0.0f, 0.0f,     1.0f, 0.0f,
+    0.5f, -0.5f, 0.5f,         1.0f, 0.0f, 0.0f,     0.0f, 1.0f,
+    0.5f, -0.5f, 0.5f,         1.0f, 0.0f, 0.0f,     0.0f, 1.0f,
+    0.5f, 0.5f, -0.5f,         1.0f, 0.0f, 0.0f,     1.0f, 0.0f,
+    0.5f, 0.5f, 0.5f,          1.0f, 0.0f, 0.0f,     1.0f, 1.0f,
     
-    0.5f, 0.5f, -0.5f,         0.0f, 1.0f, 0.0f,
-    -0.5f, 0.5f, -0.5f,        0.0f, 1.0f, 0.0f,
-    0.5f, 0.5f, 0.5f,          0.0f, 1.0f, 0.0f,
-    0.5f, 0.5f, 0.5f,          0.0f, 1.0f, 0.0f,
-    -0.5f, 0.5f, -0.5f,        0.0f, 1.0f, 0.0f,
-    -0.5f, 0.5f, 0.5f,         0.0f, 1.0f, 0.0f,
+    0.5f, 0.5f, -0.5f,         0.0f, 1.0f, 0.0f,     1.0f, 0.0f,
+    -0.5f, 0.5f, -0.5f,        0.0f, 1.0f, 0.0f,     0.0f, 0.0f,
+    0.5f, 0.5f, 0.5f,          0.0f, 1.0f, 0.0f,     1.0f, 1.0f,
+    0.5f, 0.5f, 0.5f,          0.0f, 1.0f, 0.0f,     1.0f, 1.0f,
+    -0.5f, 0.5f, -0.5f,        0.0f, 1.0f, 0.0f,     0.0f, 0.0f,
+    -0.5f, 0.5f, 0.5f,         0.0f, 1.0f, 0.0f,     0.0f, 1.0f,
     
-    -0.5f, 0.5f, -0.5f,        -1.0f, 0.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f,       -1.0f, 0.0f, 0.0f,
-    -0.5f, 0.5f, 0.5f,         -1.0f, 0.0f, 0.0f,
-    -0.5f, 0.5f, 0.5f,         -1.0f, 0.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f,       -1.0f, 0.0f, 0.0f,
-    -0.5f, -0.5f, 0.5f,        -1.0f, 0.0f, 0.0f,
+    -0.5f, 0.5f, -0.5f,        -1.0f, 0.0f, 0.0f,    1.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,       -1.0f, 0.0f, 0.0f,    0.0f, 0.0f,
+    -0.5f, 0.5f, 0.5f,         -1.0f, 0.0f, 0.0f,    1.0f, 1.0f,
+    -0.5f, 0.5f, 0.5f,         -1.0f, 0.0f, 0.0f,    1.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,       -1.0f, 0.0f, 0.0f,    0.0f, 0.0f,
+    -0.5f, -0.5f, 0.5f,        -1.0f, 0.0f, 0.0f,    0.0f, 1.0f,
     
-    -0.5f, -0.5f, -0.5f,       0.0f, -1.0f, 0.0f,
-    0.5f, -0.5f, -0.5f,        0.0f, -1.0f, 0.0f,
-    -0.5f, -0.5f, 0.5f,        0.0f, -1.0f, 0.0f,
-    -0.5f, -0.5f, 0.5f,        0.0f, -1.0f, 0.0f,
-    0.5f, -0.5f, -0.5f,        0.0f, -1.0f, 0.0f,
-    0.5f, -0.5f, 0.5f,         0.0f, -1.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,       0.0f, -1.0f, 0.0f,    0.0f, 0.0f,
+    0.5f, -0.5f, -0.5f,        0.0f, -1.0f, 0.0f,    1.0f, 0.0f,
+    -0.5f, -0.5f, 0.5f,        0.0f, -1.0f, 0.0f,    0.0f, 1.0f,
+    -0.5f, -0.5f, 0.5f,        0.0f, -1.0f, 0.0f,    0.0f, 1.0f,
+    0.5f, -0.5f, -0.5f,        0.0f, -1.0f, 0.0f,    1.0f, 0.0f,
+    0.5f, -0.5f, 0.5f,         0.0f, -1.0f, 0.0f,    1.0f, 1.0f,
     
-    0.5f, 0.5f, 0.5f,          0.0f, 0.0f, 1.0f,
-    -0.5f, 0.5f, 0.5f,         0.0f, 0.0f, 1.0f,
-    0.5f, -0.5f, 0.5f,         0.0f, 0.0f, 1.0f,
-    0.5f, -0.5f, 0.5f,         0.0f, 0.0f, 1.0f,
-    -0.5f, 0.5f, 0.5f,         0.0f, 0.0f, 1.0f,
-    -0.5f, -0.5f, 0.5f,        0.0f, 0.0f, 1.0f,
+    0.5f, 0.5f, 0.5f,          0.0f, 0.0f, 1.0f,     1.0f, 1.0f,
+    -0.5f, 0.5f, 0.5f,         0.0f, 0.0f, 1.0f,     0.0f, 1.0f,
+    0.5f, -0.5f, 0.5f,         0.0f, 0.0f, 1.0f,     1.0f, 0.0f,
+    0.5f, -0.5f, 0.5f,         0.0f, 0.0f, 1.0f,     1.0f, 0.0f,
+    -0.5f, 0.5f, 0.5f,         0.0f, 0.0f, 1.0f,     0.0f, 1.0f,
+    -0.5f, -0.5f, 0.5f,        0.0f, 0.0f, 1.0f,     0.0f, 0.0f,
     
-    0.5f, -0.5f, -0.5f,        0.0f, 0.0f, -1.0f,
-    -0.5f, -0.5f, -0.5f,       0.0f, 0.0f, -1.0f,
-    0.5f, 0.5f, -0.5f,         0.0f, 0.0f, -1.0f,
-    0.5f, 0.5f, -0.5f,         0.0f, 0.0f, -1.0f,
-    -0.5f, -0.5f, -0.5f,       0.0f, 0.0f, -1.0f,
-    -0.5f, 0.5f, -0.5f,        0.0f, 0.0f, -1.0f
+    0.5f, -0.5f, -0.5f,        0.0f, 0.0f, -1.0f,    1.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,       0.0f, 0.0f, -1.0f,    0.0f, 0.0f,
+    0.5f, 0.5f, -0.5f,         0.0f, 0.0f, -1.0f,    1.0f, 1.0f,
+    0.5f, 0.5f, -0.5f,         0.0f, 0.0f, -1.0f,    1.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,       0.0f, 0.0f, -1.0f,    0.0f, 0.0f,
+    -0.5f, 0.5f, -0.5f,        0.0f, 0.0f, -1.0f,    0.0f, 1.0f
 };
 
 @interface NWViewController () {
@@ -83,6 +85,7 @@ GLfloat gCubeVertexData[216] =
     
     GLuint _vertexArray;
     GLuint _vertexBuffer;
+    GLuint _cubeTexture;
 }
 @property (strong, nonatomic) EAGLContext *context;
 
@@ -147,6 +150,8 @@ GLfloat gCubeVertexData[216] =
     
     [self loadShaders];
     
+    _cubeTexture = [self setupTexture: @"simpleTexture.png"];
+    
     glEnable(GL_DEPTH_TEST);
     
     glGenVertexArraysOES(1, &_vertexArray);
@@ -157,9 +162,11 @@ GLfloat gCubeVertexData[216] =
     glBufferData(GL_ARRAY_BUFFER, sizeof(gCubeVertexData), gCubeVertexData, GL_STATIC_DRAW);
     
     glEnableVertexAttribArray(GLKVertexAttribPosition);
-    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(0));
+    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(0));
     glEnableVertexAttribArray(GLKVertexAttribNormal);
-    glVertexAttribPointer(GLKVertexAttribNormal, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(12));
+    glVertexAttribPointer(GLKVertexAttribNormal, 3, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(12));
+    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
+    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(24));
     
     glBindVertexArrayOES(0);
 }
@@ -170,6 +177,7 @@ GLfloat gCubeVertexData[216] =
     
     glDeleteBuffers(1, &_vertexBuffer);
     glDeleteVertexArraysOES(1, &_vertexArray);
+    glDeleteTextures(1, &_cubeTexture);
     
     if (_program) {
         glDeleteProgram(_program);
@@ -215,6 +223,37 @@ GLfloat gCubeVertexData[216] =
     glDrawArrays(GL_TRIANGLES, 0, 36);
 }
 
+#pragma mark -  Load Shaders
+- (GLuint)setupTexture:(NSString *)fileName
+{
+    // This method from http://stackoverflow.com/q/7930148/2775
+    CGImageRef spriteImage = [UIImage imageNamed:fileName].CGImage;
+    if (!spriteImage)
+    {
+        NSLog(@"Failed to load image %@", fileName);
+        exit(1);
+    }
+    size_t width = CGImageGetWidth(spriteImage);
+    size_t height = CGImageGetHeight(spriteImage);
+    GLubyte * spriteData = (GLubyte *) calloc(width*height*4, sizeof(GLubyte));
+    CGContextRef spriteContext = CGBitmapContextCreate(spriteData, width, height, 8,     width*4,CGImageGetColorSpace(spriteImage), kCGImageAlphaPremultipliedLast);
+    CGContextDrawImage(spriteContext, CGRectMake(0, 0, width, height), spriteImage);
+    CGContextRelease(spriteContext);
+    GLuint texName;
+    glGenTextures(1, &texName);
+    glBindTexture(GL_TEXTURE_2D, texName);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, spriteData);
+    GLenum err = glGetError();
+    if (err != GL_NO_ERROR)
+        NSLog(@"Error uploading texture. glError: 0x%04X", err);
+    free(spriteData);
+    return texName;
+}
+
 #pragma mark -  OpenGL ES 2 shader compilation
 
 - (BOOL)loadShaders
@@ -226,14 +265,14 @@ GLfloat gCubeVertexData[216] =
     _program = glCreateProgram();
     
     // Create and compile vertex shader.
-    vertShaderPathname = [[NSBundle mainBundle] pathForResource:@"Shader" ofType:@"vsh"];
+    vertShaderPathname = [[NSBundle mainBundle] pathForResource:@"CubeShader" ofType:@"vsh"];
     if (![self compileShader:&vertShader type:GL_VERTEX_SHADER file:vertShaderPathname]) {
         NSLog(@"Failed to compile vertex shader");
         return NO;
     }
     
     // Create and compile fragment shader.
-    fragShaderPathname = [[NSBundle mainBundle] pathForResource:@"Shader" ofType:@"fsh"];
+    fragShaderPathname = [[NSBundle mainBundle] pathForResource:@"CubeShader" ofType:@"fsh"];
     if (![self compileShader:&fragShader type:GL_FRAGMENT_SHADER file:fragShaderPathname]) {
         NSLog(@"Failed to compile fragment shader");
         return NO;
@@ -249,6 +288,7 @@ GLfloat gCubeVertexData[216] =
     // This needs to be done prior to linking.
     glBindAttribLocation(_program, GLKVertexAttribPosition, "position");
     glBindAttribLocation(_program, GLKVertexAttribNormal, "normal");
+    glBindAttribLocation(_program, GLKVertexAttribTexCoord0, "inputTextureCoordinate");
     
     // Link program.
     if (![self linkProgram:_program]) {

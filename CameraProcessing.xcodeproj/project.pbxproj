@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01496D4E168F57C7000694B9 /* simpleTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 01496D4D168F57C7000694B9 /* simpleTexture.png */; };
 		01C238821687DE0A008B8585 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C238811687DE0A008B8585 /* UIKit.framework */; };
 		01C238841687DE0A008B8585 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C238831687DE0A008B8585 /* Foundation.framework */; };
 		01C238861687DE0A008B8585 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C238851687DE0A008B8585 /* CoreGraphics.framework */; };
@@ -18,14 +19,15 @@
 		01C238981687DE0B008B8585 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C238971687DE0A008B8585 /* Default.png */; };
 		01C2389A1687DE0B008B8585 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C238991687DE0B008B8585 /* Default@2x.png */; };
 		01C2389C1687DE0B008B8585 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C2389B1687DE0B008B8585 /* Default-568h@2x.png */; };
-		01C2389E1687DE0B008B8585 /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 01C2389D1687DE0B008B8585 /* Shader.fsh */; };
-		01C238A01687DE0B008B8585 /* Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 01C2389F1687DE0B008B8585 /* Shader.vsh */; };
+		01C2389E1687DE0B008B8585 /* CubeShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 01C2389D1687DE0B008B8585 /* CubeShader.fsh */; };
+		01C238A01687DE0B008B8585 /* CubeShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 01C2389F1687DE0B008B8585 /* CubeShader.vsh */; };
 		01C238A31687DE0B008B8585 /* NWViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C238A21687DE0B008B8585 /* NWViewController.m */; };
 		01C238A61687DE0B008B8585 /* NWViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01C238A41687DE0B008B8585 /* NWViewController_iPhone.xib */; };
 		01C238A91687DE0B008B8585 /* NWViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01C238A71687DE0B008B8585 /* NWViewController_iPad.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		01496D4D168F57C7000694B9 /* simpleTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = simpleTexture.png; sourceTree = "<group>"; };
 		01C2387D1687DE0A008B8585 /* CameraProcessing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CameraProcessing.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01C238811687DE0A008B8585 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		01C238831687DE0A008B8585 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -41,8 +43,8 @@
 		01C238971687DE0A008B8585 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		01C238991687DE0B008B8585 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		01C2389B1687DE0B008B8585 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		01C2389D1687DE0B008B8585 /* Shader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.fsh; path = Shaders/Shader.fsh; sourceTree = "<group>"; };
-		01C2389F1687DE0B008B8585 /* Shader.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.vsh; path = Shaders/Shader.vsh; sourceTree = "<group>"; };
+		01C2389D1687DE0B008B8585 /* CubeShader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = CubeShader.fsh; path = Shaders/CubeShader.fsh; sourceTree = "<group>"; };
+		01C2389F1687DE0B008B8585 /* CubeShader.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = CubeShader.vsh; path = Shaders/CubeShader.vsh; sourceTree = "<group>"; };
 		01C238A11687DE0B008B8585 /* NWViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NWViewController.h; sourceTree = "<group>"; };
 		01C238A21687DE0B008B8585 /* NWViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NWViewController.m; sourceTree = "<group>"; };
 		01C238A51687DE0B008B8585 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/NWViewController_iPhone.xib; sourceTree = "<group>"; };
@@ -97,10 +99,11 @@
 		01C2388B1687DE0A008B8585 /* CameraProcessing */ = {
 			isa = PBXGroup;
 			children = (
+				01496D4D168F57C7000694B9 /* simpleTexture.png */,
 				01C238941687DE0A008B8585 /* NWAppDelegate.h */,
 				01C238951687DE0A008B8585 /* NWAppDelegate.m */,
-				01C2389D1687DE0B008B8585 /* Shader.fsh */,
-				01C2389F1687DE0B008B8585 /* Shader.vsh */,
+				01C2389D1687DE0B008B8585 /* CubeShader.fsh */,
+				01C2389F1687DE0B008B8585 /* CubeShader.vsh */,
 				01C238A11687DE0B008B8585 /* NWViewController.h */,
 				01C238A21687DE0B008B8585 /* NWViewController.m */,
 				01C238A41687DE0B008B8585 /* NWViewController_iPhone.xib */,
@@ -180,10 +183,11 @@
 				01C238981687DE0B008B8585 /* Default.png in Resources */,
 				01C2389A1687DE0B008B8585 /* Default@2x.png in Resources */,
 				01C2389C1687DE0B008B8585 /* Default-568h@2x.png in Resources */,
-				01C2389E1687DE0B008B8585 /* Shader.fsh in Resources */,
-				01C238A01687DE0B008B8585 /* Shader.vsh in Resources */,
+				01C2389E1687DE0B008B8585 /* CubeShader.fsh in Resources */,
+				01C238A01687DE0B008B8585 /* CubeShader.vsh in Resources */,
 				01C238A61687DE0B008B8585 /* NWViewController_iPhone.xib in Resources */,
 				01C238A91687DE0B008B8585 /* NWViewController_iPad.xib in Resources */,
+				01496D4E168F57C7000694B9 /* simpleTexture.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -325,6 +329,7 @@
 				01C238AE1687DE0B008B8585 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
