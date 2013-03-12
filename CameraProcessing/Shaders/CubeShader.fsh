@@ -17,7 +17,24 @@ void main()
 {
 	vec4 pixelColor;
 
-	pixelColor = texture2D(videoFrame, textureCoordinate);
+    // TODO: precalculate these. maybe make them shader uniforms
+    float distortion = .5;
+    vec2 distortion_center = vec2(0.5, 0.5);
+	float distortion_radius = sqrt(.5);
+	float inv_distortion_radius = 1.0/distortion_radius;
+    
+    // recalculate the texture coordinate with some lens distortion
+    // negative distortion is pincushion, positive is barrel.
+
+	vec2 centerToUv = textureCoordinate-distortion_center;
+    float r = length(centerToUv);
+	float r_distorted = (1.0 + distortion * (r*inv_distortion_radius - 1.0));
+	vec2 distortedTextureCoordinate = distortion_center + (r_distorted * centerToUv);
+    
+    pixelColor = texture2D(videoFrame, distortedTextureCoordinate);
+    
+    // no distortion:
+    //pixelColor = texture2D(videoFrame, textureCoordinate);
 
     //gl_FragColor = colorVarying;
     //gl_FragColor = pixelColor;
