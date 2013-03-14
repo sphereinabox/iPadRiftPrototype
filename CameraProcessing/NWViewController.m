@@ -167,8 +167,8 @@ GLfloat gCubeVertexData[288] =
     
     [self loadShaders];
     
-//    _cubeTexture = [self setupTexture: @"simpleTexture.png"];
-    _cubeTexture = [self setupTexture: @"Grid.png"];
+    _cubeTexture = [self setupTexture: @"simpleTexture.png"];
+    _planeTexture = [self setupTexture: @"Grid.png"];
     
     glEnable(GL_DEPTH_TEST);
     
@@ -251,6 +251,7 @@ GLfloat gCubeVertexData[288] =
     // TODO: rotate plane to face camera?
     // TODO: position plane...
     modelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, -1.5f);
+    modelViewMatrix = GLKMatrix4Scale(modelViewMatrix, .5f, .5f, .5f);
 //    modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, M_PI_2, 0.0f, 0.0f, 1.0f);
     _planeNormalMatrix = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(modelViewMatrix), NULL);
     _planeModelViewProjectionMatrix = GLKMatrix4Multiply(projectionMatrix, modelViewMatrix);
@@ -267,6 +268,8 @@ GLfloat gCubeVertexData[288] =
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Draw cube:
+    glBindTexture(GL_TEXTURE_2D, _cubeTexture);
+
     glBindVertexArrayOES(_cubeVertexArray);
     
     glUseProgram(_program);
@@ -278,6 +281,8 @@ GLfloat gCubeVertexData[288] =
 
 
     // Draw plane:
+    glBindTexture(GL_TEXTURE_2D, _planeTexture);
+    
     glBindVertexArrayOES(_planeVertexArray);
     
     glUseProgram(_program);
