@@ -17,7 +17,8 @@ enum
     UNIFORM_NORMAL_MATRIX,
     NUM_UNIFORMS
 };
-GLint uniforms[NUM_UNIFORMS];
+GLint cubeUniforms[NUM_UNIFORMS];
+GLint planeUniforms[NUM_UNIFORMS];
 
 // Attribute index.
 enum
@@ -86,9 +87,62 @@ GLfloat gCubeVertexData[288] =
     -0.5f, 0.5f, -0.5f,        0.0f, 0.0f, -1.0f,    0.0f, 1.0f
 };
 
-@interface NWViewController () {
-    GLuint _program;
+GLfloat gCubeMapVertexData[288] =
+{
+    // Data layout for each line below is:
+    // positionX, positionY, positionZ,
+    //                     normalX, normalY, normalZ,
+    //                                                 U,   V,
+    -1.000000f, -1.000000f, 1.000000f,   1.000000f, 0.000000f, -0.000000f, 0.749956f, 0.249999f,
+    -1.000000f, -1.000000f, -1.000000f,   1.000000f, 0.000000f, -0.000000f, 0.749957f, 0.499955f,
+    -1.000000f, 1.000000f, -1.000000f,   1.000000f, 0.000000f, -0.000000f, 0.500000f, 0.499956f,
     
+    -1.000000f, 1.000000f, 1.000000f,   0.000000f, -1.000000f, 0.000000f, 0.499999f, 0.249999f,
+    -1.000000f, 1.000000f, -1.000000f,   0.000000f, -1.000000f, 0.000000f, 0.500000f, 0.499956f,
+    1.000000f, 1.000000f, -1.000000f,   0.000000f, -1.000000f, 0.000000f, 0.250043f, 0.499956f,
+    
+    1.000000f, 1.000000f, 1.000000f,   -1.000000f, 0.000000f, 0.000000f, 0.250043f, 0.250000f,
+    1.000000f, 1.000000f, -1.000000f,   -1.000000f, 0.000000f, 0.000000f, 0.250043f, 0.499956f,
+    1.000000f, -1.000000f, -1.000000f,   -1.000000f, 0.000000f, 0.000000f, 0.000087f, 0.499956f,
+    
+    1.000000f, -1.000000f, -1.000000f,   -0.000000f, 1.000000f, 0.000000f, 0.999913f, 0.499955f,
+    -1.000000f, -1.000000f, -1.000000f,   -0.000000f, 1.000000f, 0.000000f, 0.749957f, 0.499955f,
+    1.000000f, -1.000000f, 1.000000f,   -0.000000f, 1.000000f, 0.000000f, 0.999913f, 0.249998f,
+    
+    -1.000000f, -1.000000f, -1.000000f,   0.000000f, 0.000000f, 1.000000f, 0.500000f, 0.749913f,
+    1.000000f, -1.000000f, -1.000000f,   0.000000f, 0.000000f, 1.000000f, 0.250043f, 0.749913f,
+    1.000000f, 1.000000f, -1.000000f,   0.000000f, 0.000000f, 1.000000f, 0.250043f, 0.499956f,
+    
+    1.000000f, -1.000000f, 1.000000f,   0.000000f, 0.000000f, -1.000000f, 0.250042f, 0.000043f,
+    -1.000000f, -1.000000f, 1.000000f,   0.000000f, 0.000000f, -1.000000f, 0.499999f, 0.000043f,
+    -1.000000f, 1.000000f, 1.000000f,   0.000000f, 0.000000f, -1.000000f, 0.499999f, 0.249999f,
+    
+    -1.000000f, 1.000000f, 1.000000f,   1.000000f, 0.000000f, -0.000000f, 0.499999f, 0.249999f,
+    -1.000000f, -1.000000f, 1.000000f,   1.000000f, 0.000000f, -0.000000f, 0.749956f, 0.249999f,
+    -1.000000f, 1.000000f, -1.000000f,   1.000000f, 0.000000f, -0.000000f, 0.500000f, 0.499956f,
+    
+    1.000000f, 1.000000f, 1.000000f,   0.000000f, -1.000000f, 0.000000f, 0.250043f, 0.250000f,
+    -1.000000f, 1.000000f, 1.000000f,   0.000000f, -1.000000f, 0.000000f, 0.499999f, 0.249999f,
+    1.000000f, 1.000000f, -1.000000f,   0.000000f, -1.000000f, 0.000000f, 0.250043f, 0.499956f,
+    
+    1.000000f, -1.000000f, 1.000000f,   -1.000000f, 0.000000f, 0.000000f, 0.000087f, 0.249999f,
+    1.000000f, 1.000000f, 1.000000f,   -1.000000f, 0.000000f, 0.000000f, 0.250043f, 0.250000f,
+    1.000000f, -1.000000f, -1.000000f,   -1.000000f, 0.000000f, 0.000000f, 0.000087f, 0.499956f,
+    
+    1.000000f, -1.000000f, 1.000000f,   -0.000000f, 1.000000f, 0.000000f, 0.999913f, 0.249998f,
+    -1.000000f, -1.000000f, -1.000000f,   -0.000000f, 1.000000f, 0.000000f, 0.749957f, 0.499955f,
+    -1.000000f, -1.000000f, 1.000000f,   -0.000000f, 1.000000f, 0.000000f, 0.749956f, 0.249999f,
+    
+    -1.000000f, 1.000000f, -1.000000f,   0.000000f, -0.000000f, 1.000000f, 0.500000f, 0.499956f,
+    -1.000000f, -1.000000f, -1.000000f,   0.000000f, -0.000000f, 1.000000f, 0.500000f, 0.749913f,
+    1.000000f, 1.000000f, -1.000000f,   0.000000f, -0.000000f, 1.000000f, 0.250043f, 0.499956f,
+    
+    1.000000f, 1.000000f, 1.000000f,   0.000000f, 0.000000f, -1.000000f, 0.250043f, 0.250000f,
+    1.000000f, -1.000000f, 1.000000f,   0.000000f, 0.000000f, -1.000000f, 0.250042f, 0.000043f,
+    -1.000000f, 1.000000f, 1.000000f,   0.000000f, 0.000000f, -1.000000f, 0.499999f, 0.249999f
+};
+
+@interface NWViewController () {    
     GLKMatrix4 _cubeModelViewProjectionMatrix;
     GLKMatrix3 _cubeNormalMatrix;
     float _cubeRotation;
@@ -96,20 +150,24 @@ GLfloat gCubeVertexData[288] =
     GLKMatrix4 _planeModelViewProjectionMatrix;
     GLKMatrix3 _planeNormalMatrix;
     
+    GLuint _cubeProgram;
     GLuint _cubeVertexArray;
     GLuint _cubeVertexBuffer;
     GLuint _cubeTexture;
 
+    GLuint _planeProgram;
     GLuint _planeVertexArray;
     GLuint _planeVertexBuffer;
     GLuint _planeTexture;
+    GLuint _planeFrameBuffer; // _planeTexture is rendered-to-texture using _planeFrameBuffer
 }
 @property (strong, nonatomic) EAGLContext *context;
 
 - (void)setupGL;
 - (void)tearDownGL;
 
-- (BOOL)loadShaders;
+- (BOOL)loadSkyboxShaders;
+- (BOOL)loadPlaneShaders;
 - (BOOL)compileShader:(GLuint *)shader type:(GLenum)type file:(NSString *)file;
 - (BOOL)linkProgram:(GLuint)prog;
 - (BOOL)validateProgram:(GLuint)prog;
@@ -165,10 +223,37 @@ GLfloat gCubeVertexData[288] =
 {
     [EAGLContext setCurrentContext:self.context];
     
-    [self loadShaders];
+    [self loadSkyboxShaders];
+    [self loadPlaneShaders];
     
-    _cubeTexture = [self setupTexture: @"simpleTexture.png"];
-    _planeTexture = [self setupTexture: @"Grid.png"];
+    //_cubeTexture = [self setupTexture: @"simpleTexture.png"];
+    _cubeTexture = [self setupTexture: @"CubemapCrossSquare.png"];
+    
+    // we render to _planeTexture using _planeFrameBuffer
+    //old: _planeTexture = [self setupTexture: @"Grid.png"];
+    int planeTextureWidth = 512;
+    int planeTextureHeight = 512;
+    glGenTextures(1, &_planeTexture);
+    glBindTexture(GL_TEXTURE_2D, _planeTexture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, planeTextureWidth, planeTextureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    GLenum err = glGetError();
+    if (err != GL_NO_ERROR)
+        NSLog(@"Error uploading texture. glError: 0x%04X", err);
+
+
+    glGenFramebuffersOES(1, &_planeFrameBuffer);
+    glBindFramebufferOES(GL_FRAMEBUFFER_OES, _planeFrameBuffer);
+    // attach renderbuffer
+    glFramebufferTexture2DOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_TEXTURE_2D, _planeTexture, 0);
+    // unbind frame buffer
+    // TODO: is the default framebuffer really 0?
+    //?[view bindDrawable]; // glBindFramebufferOES(GL_FRAMEBUFFER_OES, ?);
+    //glBindFramebufferOES(GL_FRAMEBUFFER_OES, ?);
+    
     
     glEnable(GL_DEPTH_TEST);
     
@@ -178,7 +263,7 @@ GLfloat gCubeVertexData[288] =
     
     glGenBuffers(1, &_cubeVertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, _cubeVertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(gCubeVertexData), gCubeVertexData, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(gCubeMapVertexData), gCubeMapVertexData, GL_STATIC_DRAW);
     
     glEnableVertexAttribArray(GLKVertexAttribPosition);
     glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(0));
@@ -218,11 +303,16 @@ GLfloat gCubeVertexData[288] =
 
     glDeleteBuffers(1, &_planeVertexBuffer);
     glDeleteVertexArraysOES(1, &_planeVertexArray);
+    glDeleteFramebuffers(1, &_planeFrameBuffer);
     glDeleteTextures(1, &_planeTexture);
     
-    if (_program) {
-        glDeleteProgram(_program);
-        _program = 0;
+    if (_cubeProgram) {
+        glDeleteProgram(_cubeProgram);
+        _cubeProgram = 0;
+    }
+    if (_planeProgram) {
+        glDeleteProgram(_planeProgram);
+        _planeProgram = 0;
     }
 }
 
@@ -233,11 +323,11 @@ GLfloat gCubeVertexData[288] =
     float aspect = fabsf(self.view.bounds.size.width / self.view.bounds.size.height);
     GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 100.0f);
     
-    GLKMatrix4 baseModelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, -4.0f);
+    GLKMatrix4 baseModelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, 0.0f);
     baseModelViewMatrix = GLKMatrix4Rotate(baseModelViewMatrix, _cubeRotation, 0.0f, 1.0f, 0.0f);
     
     // Compute the model view matrix for the object rendered with ES2
-    GLKMatrix4 modelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, 1.5f);
+    GLKMatrix4 modelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, 0.0f);
     modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, _cubeRotation, 1.0f, 1.0f, 1.0f);
     modelViewMatrix = GLKMatrix4Multiply(baseModelViewMatrix, modelViewMatrix);
     
@@ -251,7 +341,7 @@ GLfloat gCubeVertexData[288] =
     // TODO: rotate plane to face camera?
     // TODO: position plane...
     modelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, -1.5f);
-    modelViewMatrix = GLKMatrix4Scale(modelViewMatrix, .5f, .5f, .5f);
+//    modelViewMatrix = GLKMatrix4Scale(modelViewMatrix, .5f, .5f, .5f);
 //    modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, M_PI_2, 0.0f, 0.0f, 1.0f);
     _planeNormalMatrix = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(modelViewMatrix), NULL);
     _planeModelViewProjectionMatrix = GLKMatrix4Multiply(projectionMatrix, modelViewMatrix);
@@ -264,31 +354,40 @@ GLfloat gCubeVertexData[288] =
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
-    glClearColor(0.65f, 0.65f, 0.65f, 1.0f);
+    glBindFramebufferOES(GL_FRAMEBUFFER_OES, _planeFrameBuffer);
+    glClearColor(0.35f, 0.35f, 0.85f, 1.0f); // light blue
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+    // cheesy hack: just do backface culling. There's no depth buffer now but for the single cube I'm drawing this looks fine.
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    
     // Draw cube:
     glBindTexture(GL_TEXTURE_2D, _cubeTexture);
 
     glBindVertexArrayOES(_cubeVertexArray);
     
-    glUseProgram(_program);
+    glUseProgram(_cubeProgram);
     
-    glUniformMatrix4fv(uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _cubeModelViewProjectionMatrix.m);
-    glUniformMatrix3fv(uniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _cubeNormalMatrix.m);
+    glUniformMatrix4fv(cubeUniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _cubeModelViewProjectionMatrix.m);
+    glUniformMatrix3fv(cubeUniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _cubeNormalMatrix.m);
     
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
+    // TODO: is device framebuffer really 0?
+    [view bindDrawable]; // glBindFramebufferOES(GL_FRAMEBUFFER_OES, ?);
+    glClearColor(0.65f, 0.65f, 0.65f, 1.0f); // gray
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
     // Draw plane:
     glBindTexture(GL_TEXTURE_2D, _planeTexture);
     
     glBindVertexArrayOES(_planeVertexArray);
     
-    glUseProgram(_program);
+    glUseProgram(_planeProgram);
     
-    glUniformMatrix4fv(uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _planeModelViewProjectionMatrix.m);
-    glUniformMatrix3fv(uniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _planeNormalMatrix.m);
+    glUniformMatrix4fv(planeUniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _planeModelViewProjectionMatrix.m);
+    glUniformMatrix3fv(planeUniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _planeNormalMatrix.m);
     
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
@@ -327,43 +426,43 @@ GLfloat gCubeVertexData[288] =
 
 #pragma mark -  OpenGL ES 2 shader compilation
 
-- (BOOL)loadShaders
+- (BOOL)loadSkyboxShaders
 {
     GLuint vertShader, fragShader;
     NSString *vertShaderPathname, *fragShaderPathname;
     
     // Create shader program.
-    _program = glCreateProgram();
+    _cubeProgram = glCreateProgram();
     
     // Create and compile vertex shader.
-    vertShaderPathname = [[NSBundle mainBundle] pathForResource:@"CubeShader" ofType:@"vsh"];
+    vertShaderPathname = [[NSBundle mainBundle] pathForResource:@"SkyboxShader" ofType:@"vsh"];
     if (![self compileShader:&vertShader type:GL_VERTEX_SHADER file:vertShaderPathname]) {
         NSLog(@"Failed to compile vertex shader");
         return NO;
     }
     
     // Create and compile fragment shader.
-    fragShaderPathname = [[NSBundle mainBundle] pathForResource:@"CubeShader" ofType:@"fsh"];
+    fragShaderPathname = [[NSBundle mainBundle] pathForResource:@"SkyboxShader" ofType:@"fsh"];
     if (![self compileShader:&fragShader type:GL_FRAGMENT_SHADER file:fragShaderPathname]) {
         NSLog(@"Failed to compile fragment shader");
         return NO;
     }
     
     // Attach vertex shader to program.
-    glAttachShader(_program, vertShader);
+    glAttachShader(_cubeProgram, vertShader);
     
     // Attach fragment shader to program.
-    glAttachShader(_program, fragShader);
+    glAttachShader(_cubeProgram, fragShader);
     
     // Bind attribute locations.
     // This needs to be done prior to linking.
-    glBindAttribLocation(_program, GLKVertexAttribPosition, "position");
-    glBindAttribLocation(_program, GLKVertexAttribNormal, "normal");
-    glBindAttribLocation(_program, GLKVertexAttribTexCoord0, "inputTextureCoordinate");
+    glBindAttribLocation(_cubeProgram, GLKVertexAttribPosition, "position");
+    glBindAttribLocation(_cubeProgram, GLKVertexAttribNormal, "normal");
+    glBindAttribLocation(_cubeProgram, GLKVertexAttribTexCoord0, "inputTextureCoordinate");
     
     // Link program.
-    if (![self linkProgram:_program]) {
-        NSLog(@"Failed to link program: %d", _program);
+    if (![self linkProgram:_cubeProgram]) {
+        NSLog(@"Failed to link program: %d", _cubeProgram);
         
         if (vertShader) {
             glDeleteShader(vertShader);
@@ -373,25 +472,96 @@ GLfloat gCubeVertexData[288] =
             glDeleteShader(fragShader);
             fragShader = 0;
         }
-        if (_program) {
-            glDeleteProgram(_program);
-            _program = 0;
+        if (_cubeProgram) {
+            glDeleteProgram(_cubeProgram);
+            _cubeProgram = 0;
         }
         
         return NO;
     }
     
     // Get uniform locations.
-    uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX] = glGetUniformLocation(_program, "modelViewProjectionMatrix");
-    uniforms[UNIFORM_NORMAL_MATRIX] = glGetUniformLocation(_program, "normalMatrix");
+    cubeUniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX] = glGetUniformLocation(_cubeProgram, "modelViewProjectionMatrix");
+    cubeUniforms[UNIFORM_NORMAL_MATRIX] = glGetUniformLocation(_cubeProgram, "normalMatrix");
     
     // Release vertex and fragment shaders.
     if (vertShader) {
-        glDetachShader(_program, vertShader);
+        glDetachShader(_cubeProgram, vertShader);
         glDeleteShader(vertShader);
     }
     if (fragShader) {
-        glDetachShader(_program, fragShader);
+        glDetachShader(_cubeProgram, fragShader);
+        glDeleteShader(fragShader);
+    }
+    
+    return YES;
+}
+
+- (BOOL)loadPlaneShaders
+{
+    GLuint vertShader, fragShader;
+    NSString *vertShaderPathname, *fragShaderPathname;
+    
+    // Create shader program.
+    _planeProgram = glCreateProgram();
+    
+    // Create and compile vertex shader.
+    vertShaderPathname = [[NSBundle mainBundle] pathForResource:@"PlaneShader" ofType:@"vsh"];
+    if (![self compileShader:&vertShader type:GL_VERTEX_SHADER file:vertShaderPathname]) {
+        NSLog(@"Failed to compile vertex shader");
+        return NO;
+    }
+    
+    // Create and compile fragment shader.
+    fragShaderPathname = [[NSBundle mainBundle] pathForResource:@"PlaneShader" ofType:@"fsh"];
+    if (![self compileShader:&fragShader type:GL_FRAGMENT_SHADER file:fragShaderPathname]) {
+        NSLog(@"Failed to compile fragment shader");
+        return NO;
+    }
+    
+    // Attach vertex shader to program.
+    glAttachShader(_planeProgram, vertShader);
+    
+    // Attach fragment shader to program.
+    glAttachShader(_planeProgram, fragShader);
+    
+    // Bind attribute locations.
+    // This needs to be done prior to linking.
+    glBindAttribLocation(_planeProgram, GLKVertexAttribPosition, "position");
+    glBindAttribLocation(_planeProgram, GLKVertexAttribNormal, "normal");
+    glBindAttribLocation(_planeProgram, GLKVertexAttribTexCoord0, "inputTextureCoordinate");
+    
+    // Link program.
+    if (![self linkProgram:_planeProgram]) {
+        NSLog(@"Failed to link program: %d", _planeProgram);
+        
+        if (vertShader) {
+            glDeleteShader(vertShader);
+            vertShader = 0;
+        }
+        if (fragShader) {
+            glDeleteShader(fragShader);
+            fragShader = 0;
+        }
+        if (_planeProgram) {
+            glDeleteProgram(_planeProgram);
+            _planeProgram = 0;
+        }
+        
+        return NO;
+    }
+    
+    // Get uniform locations.
+    planeUniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX] = glGetUniformLocation(_planeProgram, "modelViewProjectionMatrix");
+    planeUniforms[UNIFORM_NORMAL_MATRIX] = glGetUniformLocation(_planeProgram, "normalMatrix");
+    
+    // Release vertex and fragment shaders.
+    if (vertShader) {
+        glDetachShader(_planeProgram, vertShader);
+        glDeleteShader(vertShader);
+    }
+    if (fragShader) {
+        glDetachShader(_planeProgram, fragShader);
         glDeleteShader(fragShader);
     }
     

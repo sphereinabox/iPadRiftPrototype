@@ -18,7 +18,7 @@ void main()
 	vec4 pixelColor;
 
     // TODO: precalculate these. maybe make them shader uniforms
-    float distortion = .5;
+    float distortion = 0.5;
     vec2 distortion_center = vec2(0.5, 0.5);
 	float distortion_radius = sqrt(.5);
 	float inv_distortion_radius = 1.0/distortion_radius;
@@ -33,8 +33,10 @@ void main()
     
     pixelColor = texture2D(videoFrame, distortedTextureCoordinate);
     
-    // no distortion:
-    //pixelColor = texture2D(videoFrame, textureCoordinate);
+    
+//    // no distortion:
+//    pixelColor = texture2D(videoFrame, textureCoordinate);
+//    gl_FragColor = pixelColor; // No lighting
 
     //gl_FragColor = colorVarying;
     //gl_FragColor = pixelColor;

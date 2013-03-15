@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0102A11416F3B7E50066F5EC /* CubemapCrossSquare.png in Resources */ = {isa = PBXBuildFile; fileRef = 0102A11316F3B7E50066F5EC /* CubemapCrossSquare.png */; };
+		0102A11A16F3E6150066F5EC /* SkyboxShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 0102A11516F3E1390066F5EC /* SkyboxShader.fsh */; };
+		0102A11B16F3E6150066F5EC /* SkyboxShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 0102A11716F3E1960066F5EC /* SkyboxShader.vsh */; };
 		0104FEFA16EE71DC007656E3 /* Grid.png in Resources */ = {isa = PBXBuildFile; fileRef = 0104FEF916EE71DC007656E3 /* Grid.png */; };
 		0130D97116A379040019428E /* CameraPlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 0130D97016A379040019428E /* CameraPlaceholder.png */; };
 		01496D4E168F57C7000694B9 /* simpleTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 01496D4D168F57C7000694B9 /* simpleTexture.png */; };
@@ -21,14 +24,17 @@
 		01C238981687DE0B008B8585 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C238971687DE0A008B8585 /* Default.png */; };
 		01C2389A1687DE0B008B8585 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C238991687DE0B008B8585 /* Default@2x.png */; };
 		01C2389C1687DE0B008B8585 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C2389B1687DE0B008B8585 /* Default-568h@2x.png */; };
-		01C2389E1687DE0B008B8585 /* CubeShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 01C2389D1687DE0B008B8585 /* CubeShader.fsh */; };
-		01C238A01687DE0B008B8585 /* CubeShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 01C2389F1687DE0B008B8585 /* CubeShader.vsh */; };
+		01C2389E1687DE0B008B8585 /* PlaneShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 01C2389D1687DE0B008B8585 /* PlaneShader.fsh */; };
+		01C238A01687DE0B008B8585 /* PlaneShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 01C2389F1687DE0B008B8585 /* PlaneShader.vsh */; };
 		01C238A31687DE0B008B8585 /* NWViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C238A21687DE0B008B8585 /* NWViewController.m */; };
 		01C238A61687DE0B008B8585 /* NWViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01C238A41687DE0B008B8585 /* NWViewController_iPhone.xib */; };
 		01C238A91687DE0B008B8585 /* NWViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01C238A71687DE0B008B8585 /* NWViewController_iPad.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0102A11316F3B7E50066F5EC /* CubemapCrossSquare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CubemapCrossSquare.png; sourceTree = "<group>"; };
+		0102A11516F3E1390066F5EC /* SkyboxShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = SkyboxShader.fsh; path = Shaders/SkyboxShader.fsh; sourceTree = "<group>"; };
+		0102A11716F3E1960066F5EC /* SkyboxShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = SkyboxShader.vsh; path = Shaders/SkyboxShader.vsh; sourceTree = "<group>"; };
 		0104FEF916EE71DC007656E3 /* Grid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Grid.png; sourceTree = "<group>"; };
 		0130D97016A379040019428E /* CameraPlaceholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CameraPlaceholder.png; sourceTree = SOURCE_ROOT; };
 		01496D4D168F57C7000694B9 /* simpleTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = simpleTexture.png; sourceTree = "<group>"; };
@@ -47,8 +53,8 @@
 		01C238971687DE0A008B8585 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		01C238991687DE0B008B8585 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		01C2389B1687DE0B008B8585 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		01C2389D1687DE0B008B8585 /* CubeShader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = CubeShader.fsh; path = Shaders/CubeShader.fsh; sourceTree = "<group>"; };
-		01C2389F1687DE0B008B8585 /* CubeShader.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = CubeShader.vsh; path = Shaders/CubeShader.vsh; sourceTree = "<group>"; };
+		01C2389D1687DE0B008B8585 /* PlaneShader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = PlaneShader.fsh; path = Shaders/PlaneShader.fsh; sourceTree = "<group>"; };
+		01C2389F1687DE0B008B8585 /* PlaneShader.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = PlaneShader.vsh; path = Shaders/PlaneShader.vsh; sourceTree = "<group>"; };
 		01C238A11687DE0B008B8585 /* NWViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NWViewController.h; sourceTree = "<group>"; };
 		01C238A21687DE0B008B8585 /* NWViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NWViewController.m; sourceTree = "<group>"; };
 		01C238A51687DE0B008B8585 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/NWViewController_iPhone.xib; sourceTree = "<group>"; };
@@ -71,6 +77,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0102A11916F3E4D00066F5EC /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				01C2389D1687DE0B008B8585 /* PlaneShader.fsh */,
+				01C2389F1687DE0B008B8585 /* PlaneShader.vsh */,
+				0102A11516F3E1390066F5EC /* SkyboxShader.fsh */,
+				0102A11716F3E1960066F5EC /* SkyboxShader.vsh */,
+			);
+			name = Shaders;
+			sourceTree = "<group>";
+		};
 		01C238721687DE0A008B8585 = {
 			isa = PBXGroup;
 			children = (
@@ -103,13 +120,13 @@
 		01C2388B1687DE0A008B8585 /* CameraProcessing */ = {
 			isa = PBXGroup;
 			children = (
+				0102A11916F3E4D00066F5EC /* Shaders */,
 				0130D97016A379040019428E /* CameraPlaceholder.png */,
+				0102A11316F3B7E50066F5EC /* CubemapCrossSquare.png */,
 				0104FEF916EE71DC007656E3 /* Grid.png */,
 				01496D4D168F57C7000694B9 /* simpleTexture.png */,
 				01C238941687DE0A008B8585 /* NWAppDelegate.h */,
 				01C238951687DE0A008B8585 /* NWAppDelegate.m */,
-				01C2389D1687DE0B008B8585 /* CubeShader.fsh */,
-				01C2389F1687DE0B008B8585 /* CubeShader.vsh */,
 				01C238A11687DE0B008B8585 /* NWViewController.h */,
 				01C238A21687DE0B008B8585 /* NWViewController.m */,
 				01C238A41687DE0B008B8585 /* NWViewController_iPhone.xib */,
@@ -185,17 +202,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0102A11A16F3E6150066F5EC /* SkyboxShader.fsh in Resources */,
+				0102A11B16F3E6150066F5EC /* SkyboxShader.vsh in Resources */,
 				01C238901687DE0A008B8585 /* InfoPlist.strings in Resources */,
 				01C238981687DE0B008B8585 /* Default.png in Resources */,
 				01C2389A1687DE0B008B8585 /* Default@2x.png in Resources */,
 				01C2389C1687DE0B008B8585 /* Default-568h@2x.png in Resources */,
-				01C2389E1687DE0B008B8585 /* CubeShader.fsh in Resources */,
-				01C238A01687DE0B008B8585 /* CubeShader.vsh in Resources */,
+				01C2389E1687DE0B008B8585 /* PlaneShader.fsh in Resources */,
+				01C238A01687DE0B008B8585 /* PlaneShader.vsh in Resources */,
 				01C238A61687DE0B008B8585 /* NWViewController_iPhone.xib in Resources */,
 				01C238A91687DE0B008B8585 /* NWViewController_iPad.xib in Resources */,
 				01496D4E168F57C7000694B9 /* simpleTexture.png in Resources */,
 				0130D97116A379040019428E /* CameraPlaceholder.png in Resources */,
 				0104FEFA16EE71DC007656E3 /* Grid.png in Resources */,
+				0102A11416F3B7E50066F5EC /* CubemapCrossSquare.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
