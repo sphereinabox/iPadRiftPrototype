@@ -297,6 +297,7 @@ GLfloat gCubeMapVertexData[288] =
     
     glBindVertexArrayOES(0);
 
+    self.preferredFramesPerSecond = 60;
 }
 
 - (void)tearDownGL
