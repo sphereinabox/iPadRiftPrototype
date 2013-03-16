@@ -10,6 +10,7 @@
 		0102A11416F3B7E50066F5EC /* CubemapCrossSquare.png in Resources */ = {isa = PBXBuildFile; fileRef = 0102A11316F3B7E50066F5EC /* CubemapCrossSquare.png */; };
 		0102A11A16F3E6150066F5EC /* SkyboxShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 0102A11516F3E1390066F5EC /* SkyboxShader.fsh */; };
 		0102A11B16F3E6150066F5EC /* SkyboxShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 0102A11716F3E1960066F5EC /* SkyboxShader.vsh */; };
+		0102A11F16F41EE90066F5EC /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0102A11E16F41EE90066F5EC /* CoreMotion.framework */; };
 		0104FEFA16EE71DC007656E3 /* Grid.png in Resources */ = {isa = PBXBuildFile; fileRef = 0104FEF916EE71DC007656E3 /* Grid.png */; };
 		01496D4E168F57C7000694B9 /* simpleTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 01496D4D168F57C7000694B9 /* simpleTexture.png */; };
 		01C238821687DE0A008B8585 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C238811687DE0A008B8585 /* UIKit.framework */; };
@@ -34,6 +35,7 @@
 		0102A11316F3B7E50066F5EC /* CubemapCrossSquare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CubemapCrossSquare.png; sourceTree = "<group>"; };
 		0102A11516F3E1390066F5EC /* SkyboxShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = SkyboxShader.fsh; path = Shaders/SkyboxShader.fsh; sourceTree = "<group>"; };
 		0102A11716F3E1960066F5EC /* SkyboxShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = SkyboxShader.vsh; path = Shaders/SkyboxShader.vsh; sourceTree = "<group>"; };
+		0102A11E16F41EE90066F5EC /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		0104FEF916EE71DC007656E3 /* Grid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Grid.png; sourceTree = "<group>"; };
 		01496D4D168F57C7000694B9 /* simpleTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = simpleTexture.png; sourceTree = "<group>"; };
 		01C2387D1687DE0A008B8585 /* CameraProcessing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CameraProcessing.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -64,6 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0102A11F16F41EE90066F5EC /* CoreMotion.framework in Frameworks */,
 				01C238821687DE0A008B8585 /* UIKit.framework in Frameworks */,
 				01C238841687DE0A008B8585 /* Foundation.framework in Frameworks */,
 				01C238861687DE0A008B8585 /* CoreGraphics.framework in Frameworks */,
@@ -106,6 +109,7 @@
 		01C238801687DE0A008B8585 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0102A11E16F41EE90066F5EC /* CoreMotion.framework */,
 				01C238811687DE0A008B8585 /* UIKit.framework */,
 				01C238831687DE0A008B8585 /* Foundation.framework */,
 				01C238851687DE0A008B8585 /* CoreGraphics.framework */,

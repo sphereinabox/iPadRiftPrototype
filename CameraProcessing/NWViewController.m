@@ -7,6 +7,8 @@
 //
 
 #import "NWViewController.h"
+#import <CoreMotion/CoreMotion.h>
+
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 #define DEBUG_PLANE_TEXTURE 0
@@ -146,6 +148,8 @@ GLfloat gCubeMapVertexData[288] =
 };
 
 @interface NWViewController () {
+    CMMotionManager* _cmMotionmanager;
+
     GLKMatrix4 _cubeModelViewProjectionMatrix;
     GLKMatrix3 _cubeNormalMatrix;
     float _cubeRotation;
@@ -224,9 +228,9 @@ GLfloat gCubeMapVertexData[288] =
 
 - (void)setupGL
 {
-    // TODO: Remove this...
-    _cubeRotation = 8.55828f;
-    
+    _cmMotionmanager = [[CMMotionManager alloc] init];
+    [_cmMotionmanager startDeviceMotionUpdates];
+
     [EAGLContext setCurrentContext:self.context];
     
     [self loadSkyboxShaders];
@@ -297,6 +301,8 @@ GLfloat gCubeMapVertexData[288] =
 
 - (void)tearDownGL
 {
+    [_cmMotionmanager stopDeviceMotionUpdates];
+
     [EAGLContext setCurrentContext:self.context];
     
     glDeleteBuffers(1, &_cubeVertexBuffer);
@@ -339,19 +345,52 @@ GLfloat gCubeMapVertexData[288] =
     _planeNormalMatrixRight = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(planeModelViewMatrix), NULL);
     _planeModelViewProjectionMatrixRight = GLKMatrix4Multiply(planeProjectionMatrix, planeModelViewMatrix);
     
+    
+    GLKMatrix4 deviceMotionAttitudeMatrix;
+    if (_cmMotionmanager.deviceMotionActive) {
+        CMDeviceMotion *deviceMotion = _cmMotionmanager.deviceMotion;
+    
+        // Correct for the rotation matrix not including the device orientation:
+        // TODO: Let the device notify me when the orientation changes instead of querying on each update.
+        UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+        float deviceOrientationRadians = 0.0f;
+        if (orientation == UIDeviceOrientationLandscapeLeft) {
+            deviceOrientationRadians = M_PI_2;
+        }
+        if (orientation == UIDeviceOrientationLandscapeRight) {
+            deviceOrientationRadians = -M_PI_2;
+        }
+        if (orientation == UIDeviceOrientationPortraitUpsideDown) {
+            deviceOrientationRadians = M_PI;
+        }
+        GLKMatrix4 baseRotation = GLKMatrix4MakeRotation(deviceOrientationRadians, 0.0f, 0.0f, 1.0f);
+        
+        // Note: in the simulator this comes back as the zero matrix.
+        // on device, this doesn't include the changes required to match screen rotation.
+        CMRotationMatrix a = deviceMotion.attitude.rotationMatrix;
+        deviceMotionAttitudeMatrix
+            = GLKMatrix4Make(a.m11, a.m21, a.m31, 0.0f,
+                             a.m12, a.m22, a.m32, 0.0f,
+                             a.m13, a.m23, a.m33, 0.0f,
+                             0.0f, 0.0f, 0.0f, 1.0f);
+        deviceMotionAttitudeMatrix = GLKMatrix4Multiply(baseRotation, deviceMotionAttitudeMatrix);
+    }
+    else
+    {
+        // Look straight forward (we're probably in the simulator, or a device without a gyro)
+        deviceMotionAttitudeMatrix = GLKMatrix4MakeRotation(-M_PI_2, 1.0f, 0.0f, 0.0f);
+    }
+    
     // Cube matricies:
     GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(120.0f), 1.0f, 0.1f, 100.0f);
     
     GLKMatrix4 baseModelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, 0.0f);
-    baseModelViewMatrix = GLKMatrix4Rotate(baseModelViewMatrix, _cubeRotation, 0.0f, 1.0f, 0.0f);
-    
-    // Compute the model view matrix for the object rendered with ES2
+    baseModelViewMatrix = GLKMatrix4Multiply(baseModelViewMatrix, deviceMotionAttitudeMatrix);
+
     GLKMatrix4 modelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, 0.0f);
-    modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, -M_PI_2, 1.0f, 0.0f, 0.0f);
     modelViewMatrix = GLKMatrix4Multiply(baseModelViewMatrix, modelViewMatrix);
     
     _cubeNormalMatrix = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(modelViewMatrix), NULL);
-    
     _cubeModelViewProjectionMatrix = GLKMatrix4Multiply(projectionMatrix, modelViewMatrix);
     
     _cubeRotation += self.timeSinceLastUpdate * 0.125f;
