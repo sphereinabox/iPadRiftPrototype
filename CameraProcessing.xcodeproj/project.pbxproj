@@ -11,7 +11,6 @@
 		0102A11A16F3E6150066F5EC /* SkyboxShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 0102A11516F3E1390066F5EC /* SkyboxShader.fsh */; };
 		0102A11B16F3E6150066F5EC /* SkyboxShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 0102A11716F3E1960066F5EC /* SkyboxShader.vsh */; };
 		0104FEFA16EE71DC007656E3 /* Grid.png in Resources */ = {isa = PBXBuildFile; fileRef = 0104FEF916EE71DC007656E3 /* Grid.png */; };
-		0130D97116A379040019428E /* CameraPlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 0130D97016A379040019428E /* CameraPlaceholder.png */; };
 		01496D4E168F57C7000694B9 /* simpleTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 01496D4D168F57C7000694B9 /* simpleTexture.png */; };
 		01C238821687DE0A008B8585 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C238811687DE0A008B8585 /* UIKit.framework */; };
 		01C238841687DE0A008B8585 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C238831687DE0A008B8585 /* Foundation.framework */; };
@@ -36,7 +35,6 @@
 		0102A11516F3E1390066F5EC /* SkyboxShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = SkyboxShader.fsh; path = Shaders/SkyboxShader.fsh; sourceTree = "<group>"; };
 		0102A11716F3E1960066F5EC /* SkyboxShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = SkyboxShader.vsh; path = Shaders/SkyboxShader.vsh; sourceTree = "<group>"; };
 		0104FEF916EE71DC007656E3 /* Grid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Grid.png; sourceTree = "<group>"; };
-		0130D97016A379040019428E /* CameraPlaceholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CameraPlaceholder.png; sourceTree = SOURCE_ROOT; };
 		01496D4D168F57C7000694B9 /* simpleTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = simpleTexture.png; sourceTree = "<group>"; };
 		01C2387D1687DE0A008B8585 /* CameraProcessing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CameraProcessing.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01C238811687DE0A008B8585 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -121,7 +119,6 @@
 			isa = PBXGroup;
 			children = (
 				0102A11916F3E4D00066F5EC /* Shaders */,
-				0130D97016A379040019428E /* CameraPlaceholder.png */,
 				0102A11316F3B7E50066F5EC /* CubemapCrossSquare.png */,
 				0104FEF916EE71DC007656E3 /* Grid.png */,
 				01496D4D168F57C7000694B9 /* simpleTexture.png */,
@@ -213,7 +210,6 @@
 				01C238A61687DE0B008B8585 /* NWViewController_iPhone.xib in Resources */,
 				01C238A91687DE0B008B8585 /* NWViewController_iPad.xib in Resources */,
 				01496D4E168F57C7000694B9 /* simpleTexture.png in Resources */,
-				0130D97116A379040019428E /* CameraPlaceholder.png in Resources */,
 				0104FEFA16EE71DC007656E3 /* Grid.png in Resources */,
 				0102A11416F3B7E50066F5EC /* CubemapCrossSquare.png in Resources */,
 			);

@@ -9,6 +9,9 @@
 #import "NWViewController.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
+#define DEBUG_PLANE_TEXTURE 0
+
+static const int PLANE_TEXTURE_SIZE = 1024;
 
 // Uniform index.
 enum
@@ -142,19 +145,19 @@ GLfloat gCubeMapVertexData[288] =
     -1.000000f, 1.000000f, 1.000000f,   0.000000f, 0.000000f, -1.000000f, 0.499999f, 0.249999f
 };
 
-@interface NWViewController () {    
+@interface NWViewController () {
     GLKMatrix4 _cubeModelViewProjectionMatrix;
     GLKMatrix3 _cubeNormalMatrix;
     float _cubeRotation;
-    
-    GLKMatrix4 _planeModelViewProjectionMatrix;
-    GLKMatrix3 _planeNormalMatrix;
-    
     GLuint _cubeProgram;
     GLuint _cubeVertexArray;
     GLuint _cubeVertexBuffer;
     GLuint _cubeTexture;
 
+    GLKMatrix4 _planeModelViewProjectionMatrixLeft;
+    GLKMatrix3 _planeNormalMatrixLeft;
+    GLKMatrix4 _planeModelViewProjectionMatrixRight;
+    GLKMatrix3 _planeNormalMatrixRight;
     GLuint _planeProgram;
     GLuint _planeVertexArray;
     GLuint _planeVertexBuffer;
@@ -221,6 +224,9 @@ GLfloat gCubeMapVertexData[288] =
 
 - (void)setupGL
 {
+    // TODO: Remove this...
+    _cubeRotation = 8.55828f;
+    
     [EAGLContext setCurrentContext:self.context];
     
     [self loadSkyboxShaders];
@@ -230,9 +236,11 @@ GLfloat gCubeMapVertexData[288] =
     _cubeTexture = [self setupTexture: @"CubemapCrossSquare.png"];
     
     // we render to _planeTexture using _planeFrameBuffer
-    //old: _planeTexture = [self setupTexture: @"Grid.png"];
-    int planeTextureWidth = 512;
-    int planeTextureHeight = 512;
+#if DEBUG_PLANE_TEXTURE == 1
+    _planeTexture = [self setupTexture: @"Grid.png"];
+#else
+    int planeTextureWidth = PLANE_TEXTURE_SIZE;
+    int planeTextureHeight = PLANE_TEXTURE_SIZE;
     glGenTextures(1, &_planeTexture);
     glBindTexture(GL_TEXTURE_2D, _planeTexture);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -243,17 +251,11 @@ GLfloat gCubeMapVertexData[288] =
     GLenum err = glGetError();
     if (err != GL_NO_ERROR)
         NSLog(@"Error uploading texture. glError: 0x%04X", err);
-
-
     glGenFramebuffersOES(1, &_planeFrameBuffer);
     glBindFramebufferOES(GL_FRAMEBUFFER_OES, _planeFrameBuffer);
     // attach renderbuffer
     glFramebufferTexture2DOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_TEXTURE_2D, _planeTexture, 0);
-    // unbind frame buffer
-    // TODO: is the default framebuffer really 0?
-    //?[view bindDrawable]; // glBindFramebufferOES(GL_FRAMEBUFFER_OES, ?);
-    //glBindFramebufferOES(GL_FRAMEBUFFER_OES, ?);
-    
+#endif
     
     glEnable(GL_DEPTH_TEST);
     
@@ -320,41 +322,47 @@ GLfloat gCubeMapVertexData[288] =
 
 - (void)update
 {
+    // Plane matricies:
     float aspect = fabsf(self.view.bounds.size.width / self.view.bounds.size.height);
-    GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 100.0f);
+    GLKMatrix4 planeProjectionMatrix = GLKMatrix4MakeOrtho(-aspect, aspect, -1.0f, 1.0f, -1.0f, 1.0f);
+    float planeScale = 2.0f*0.7f; // 2.0 will scale plane to vertical height of screen
+    float planeEyeOffsetX = 2.0f*.15f; // offset from center. 1.0 would offset by vertical height of screen
+    float planeEyeOffsetY = -0.05f;
+    // Left eye:
+    GLKMatrix4 planeModelViewMatrix = GLKMatrix4MakeTranslation(-planeEyeOffsetX, planeEyeOffsetY, 0.0f);
+    planeModelViewMatrix = GLKMatrix4Scale(planeModelViewMatrix, planeScale, planeScale, planeScale);
+    _planeNormalMatrixLeft = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(planeModelViewMatrix), NULL);
+    _planeModelViewProjectionMatrixLeft = GLKMatrix4Multiply(planeProjectionMatrix, planeModelViewMatrix);
+    // Right:
+    planeModelViewMatrix = GLKMatrix4MakeTranslation(planeEyeOffsetX, planeEyeOffsetY, 0.0f);
+    planeModelViewMatrix = GLKMatrix4Scale(planeModelViewMatrix, planeScale, planeScale, planeScale);
+    _planeNormalMatrixRight = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(planeModelViewMatrix), NULL);
+    _planeModelViewProjectionMatrixRight = GLKMatrix4Multiply(planeProjectionMatrix, planeModelViewMatrix);
+    
+    // Cube matricies:
+    GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(120.0f), 1.0f, 0.1f, 100.0f);
     
     GLKMatrix4 baseModelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, 0.0f);
     baseModelViewMatrix = GLKMatrix4Rotate(baseModelViewMatrix, _cubeRotation, 0.0f, 1.0f, 0.0f);
     
     // Compute the model view matrix for the object rendered with ES2
     GLKMatrix4 modelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, 0.0f);
-    modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, _cubeRotation, 1.0f, 1.0f, 1.0f);
+    modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, -M_PI_2, 1.0f, 0.0f, 0.0f);
     modelViewMatrix = GLKMatrix4Multiply(baseModelViewMatrix, modelViewMatrix);
     
     _cubeNormalMatrix = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(modelViewMatrix), NULL);
     
     _cubeModelViewProjectionMatrix = GLKMatrix4Multiply(projectionMatrix, modelViewMatrix);
     
-    _cubeRotation += self.timeSinceLastUpdate * 0.5f;
-    
-    // Compute model/view/projection and normal matrix for plane:
-    // TODO: rotate plane to face camera?
-    // TODO: position plane...
-    modelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, -1.5f);
-//    modelViewMatrix = GLKMatrix4Scale(modelViewMatrix, .5f, .5f, .5f);
-//    modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, M_PI_2, 0.0f, 0.0f, 1.0f);
-    _planeNormalMatrix = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(modelViewMatrix), NULL);
-    _planeModelViewProjectionMatrix = GLKMatrix4Multiply(projectionMatrix, modelViewMatrix);
-
-    
-    // debugging (position cube where plane is)
-    //_cubeNormalMatrix = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(modelViewMatrix), NULL);
-    //_cubeModelViewProjectionMatrix = GLKMatrix4Multiply(projectionMatrix, modelViewMatrix);
+    _cubeRotation += self.timeSinceLastUpdate * 0.125f;
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
+#if DEBUG_PLANE_TEXTURE == 1
+#else
     glBindFramebufferOES(GL_FRAMEBUFFER_OES, _planeFrameBuffer);
+    glViewport(0, 0, PLANE_TEXTURE_SIZE, PLANE_TEXTURE_SIZE); // weird. On the simulator this is automatic or something
     glClearColor(0.35f, 0.35f, 0.85f, 1.0f); // light blue
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     // cheesy hack: just do backface culling. There's no depth buffer now but for the single cube I'm drawing this looks fine.
@@ -363,16 +371,12 @@ GLfloat gCubeMapVertexData[288] =
     
     // Draw cube:
     glBindTexture(GL_TEXTURE_2D, _cubeTexture);
-
     glBindVertexArrayOES(_cubeVertexArray);
-    
     glUseProgram(_cubeProgram);
-    
     glUniformMatrix4fv(cubeUniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _cubeModelViewProjectionMatrix.m);
     glUniformMatrix3fv(cubeUniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _cubeNormalMatrix.m);
-    
     glDrawArrays(GL_TRIANGLES, 0, 36);
-
+#endif
 
     // TODO: is device framebuffer really 0?
     [view bindDrawable]; // glBindFramebufferOES(GL_FRAMEBUFFER_OES, ?);
@@ -381,16 +385,24 @@ GLfloat gCubeMapVertexData[288] =
     
     // Draw plane:
     glBindTexture(GL_TEXTURE_2D, _planeTexture);
-    
     glBindVertexArrayOES(_planeVertexArray);
-    
     glUseProgram(_planeProgram);
+    int width = [view drawableWidth];
+    int height = [view drawableHeight];
+    glEnable(GL_SCISSOR_TEST);
     
-    glUniformMatrix4fv(planeUniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _planeModelViewProjectionMatrix.m);
-    glUniformMatrix3fv(planeUniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _planeNormalMatrix.m);
-    
+    // left eye:
+    glScissor(0, 0, width/2, height);
+    glUniformMatrix4fv(planeUniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _planeModelViewProjectionMatrixLeft.m);
+    glUniformMatrix3fv(planeUniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _planeNormalMatrixLeft.m);
     glDrawArrays(GL_TRIANGLES, 0, 6);
-
+    // right eye:
+    glScissor(width/2, 0, width/2, height);
+    glUniformMatrix4fv(planeUniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _planeModelViewProjectionMatrixRight.m);
+    glUniformMatrix3fv(planeUniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _planeNormalMatrixRight.m);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    
+    glDisable(GL_SCISSOR_TEST);
 }
 
 #pragma mark -  Load Shaders
