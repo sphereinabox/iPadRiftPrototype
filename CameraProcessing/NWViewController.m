@@ -329,9 +329,12 @@ GLfloat gCubeMapVertexData[288] =
 
 - (void)update
 {
+    float invScale = 1.0f; // ipad 9.7" display
+    //float invScale = 0.814f; // ipad mini 7.9" display
+    
     // Plane matricies:
     float aspect = fabsf(self.view.bounds.size.width / self.view.bounds.size.height);
-    GLKMatrix4 planeProjectionMatrix = GLKMatrix4MakeOrtho(-aspect, aspect, -1.0f, 1.0f, -1.0f, 1.0f);
+    GLKMatrix4 planeProjectionMatrix = GLKMatrix4MakeOrtho(-aspect*invScale, aspect*invScale, -invScale, invScale, -invScale, invScale);
     float planeScale = 2.0f*0.7f; // 2.0 will scale plane to vertical height of screen
     float planeEyeOffsetX = 2.0f*.15f; // offset from center. 1.0 would offset by vertical height of screen
     float planeEyeOffsetY = -0.05f;
