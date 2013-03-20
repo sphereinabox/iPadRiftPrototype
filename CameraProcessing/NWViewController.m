@@ -13,7 +13,7 @@
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 #define DEBUG_PLANE_TEXTURE 0
 
-static const int PLANE_TEXTURE_SIZE = 1024;
+static const int PLANE_TEXTURE_SIZE = 2048;
 
 // Uniform index.
 enum
@@ -78,10 +78,10 @@ GLfloat gCubeVertexData[288] =
     0.5f, -0.5f, 0.5f,         0.0f, -1.0f, 0.0f,    1.0f, 1.0f,
     
     0.5f, 0.5f, 0.5f,          0.0f, 0.0f, 1.0f,     1.0f, 1.0f,
-    -0.5f, 0.5f, 0.5f,         0.0f, 0.0f, 1.0f,     0.0f, 1.0f,
-    0.5f, -0.5f, 0.5f,         0.0f, 0.0f, 1.0f,     1.0f, 0.0f,
-    0.5f, -0.5f, 0.5f,         0.0f, 0.0f, 1.0f,     1.0f, 0.0f,
-    -0.5f, 0.5f, 0.5f,         0.0f, 0.0f, 1.0f,     0.0f, 1.0f,
+    -0.5f, 0.5f, 0.5f,         0.0f, 0.0f, 1.0f,     1.0f, 0.0f,
+    0.5f, -0.5f, 0.5f,         0.0f, 0.0f, 1.0f,     0.0f, 1.0f,
+    0.5f, -0.5f, 0.5f,         0.0f, 0.0f, 1.0f,     0.0f, 1.0f,
+    -0.5f, 0.5f, 0.5f,         0.0f, 0.0f, 1.0f,     1.0f, 0.0f,
     -0.5f, -0.5f, 0.5f,        0.0f, 0.0f, 1.0f,     0.0f, 0.0f,
     
     0.5f, -0.5f, -0.5f,        0.0f, 0.0f, -1.0f,    1.0f, 0.0f,
@@ -458,7 +458,7 @@ GLfloat gCubeMapVertexData[288] =
     }
     
     // Cube matricies:
-    _projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(120.0f), 1.0f, 0.1f, 100.0f);
+    _projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(115.0f), 1.0f, 0.1f, 100.0f);
     
     _baseModelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, 0.0f);
     _baseModelViewMatrix = GLKMatrix4Multiply(_baseModelViewMatrix, deviceMotionAttitudeMatrix);
@@ -516,9 +516,7 @@ GLfloat gCubeMapVertexData[288] =
 {
 #if DEBUG_PLANE_TEXTURE == 1
 #else
-    //const float ipd = 0.065f; // Typical pupil distance values are 50-70mm
-    // debug animated IPD
-    float ipd = 2.0f*sinf(_gameTime);
+    const float ipd = 0.065f; // Typical pupil distance values are 50-70mm
     glBindFramebufferOES(GL_FRAMEBUFFER_OES, _planeFrameBufferLeft);
     glViewport(0, 0, PLANE_TEXTURE_SIZE, PLANE_TEXTURE_SIZE);
     [self drawWorldWithEyeOffset: -0.5f*ipd];
@@ -574,7 +572,7 @@ GLfloat gCubeMapVertexData[288] =
     GLuint texName;
     glGenTextures(1, &texName);
     glBindTexture(GL_TEXTURE_2D, texName);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -583,6 +581,9 @@ GLfloat gCubeMapVertexData[288] =
     if (err != GL_NO_ERROR)
         NSLog(@"Error uploading texture. glError: 0x%04X", err);
     free(spriteData);
+    
+    glGenerateMipmap(GL_TEXTURE_2D);
+    
     return texName;
 }
 
