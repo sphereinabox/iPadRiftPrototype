@@ -174,9 +174,14 @@ GLfloat gCubeMapVertexData[288] =
     GLuint _planeProgram;
     GLuint _planeVertexArray;
     GLuint _planeVertexBuffer;
-    GLuint _planeTexture;
-    GLuint _planeFrameBuffer; // _planeTexture is rendered-to-texture using _planeFrameBuffer
-    GLuint _planeDepthBuffer;
+    GLuint _planeTextureLeft;
+    GLuint _planeFrameBufferLeft; // _planeTexture is rendered-to-texture using _planeFrameBuffer
+    GLuint _planeDepthBufferLeft;
+    GLuint _planeTextureRight;
+    GLuint _planeFrameBufferRight; // _planeTexture is rendered-to-texture using _planeFrameBuffer
+    GLuint _planeDepthBufferRight;
+    
+    float _gameTime;
 }
 @property (strong, nonatomic) EAGLContext *context;
 
@@ -256,8 +261,9 @@ GLfloat gCubeMapVertexData[288] =
 #else
     int planeTextureWidth = PLANE_TEXTURE_SIZE;
     int planeTextureHeight = PLANE_TEXTURE_SIZE;
-    glGenTextures(1, &_planeTexture);
-    glBindTexture(GL_TEXTURE_2D, _planeTexture);
+
+    glGenTextures(1, &_planeTextureLeft);
+    glBindTexture(GL_TEXTURE_2D, _planeTextureLeft);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -266,19 +272,43 @@ GLfloat gCubeMapVertexData[288] =
     GLenum err = glGetError();
     if (err != GL_NO_ERROR)
         NSLog(@"Error uploading texture. glError: 0x%04X", err);
-    glGenFramebuffersOES(1, &_planeFrameBuffer);
-    glBindFramebufferOES(GL_FRAMEBUFFER_OES, _planeFrameBuffer);
+    glGenFramebuffersOES(1, &_planeFrameBufferLeft);
+    glBindFramebufferOES(GL_FRAMEBUFFER_OES, _planeFrameBufferLeft);
     // attach renderbuffer
-    glFramebufferTexture2DOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_TEXTURE_2D, _planeTexture, 0);
+    glFramebufferTexture2DOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_TEXTURE_2D, _planeTextureLeft, 0);
     
-    glGenRenderbuffers(1, &_planeDepthBuffer);
-    glBindRenderbuffer(GL_RENDERBUFFER, _planeDepthBuffer);
+    glGenRenderbuffers(1, &_planeDepthBufferLeft);
+    glBindRenderbuffer(GL_RENDERBUFFER, _planeDepthBufferLeft);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, planeTextureWidth, planeTextureHeight);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _planeDepthBuffer);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _planeDepthBufferLeft);
     
     GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     if(status != GL_FRAMEBUFFER_COMPLETE)
         NSLog(@"Framebuffer status: %x", (int)status);
+    
+    glGenTextures(1, &_planeTextureRight);
+    glBindTexture(GL_TEXTURE_2D, _planeTextureRight);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, planeTextureWidth, planeTextureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    GLenum err2 = glGetError();
+    if (err2 != GL_NO_ERROR)
+        NSLog(@"Error uploading texture. glError: 0x%04X", err2);
+    glGenFramebuffersOES(1, &_planeFrameBufferRight);
+    glBindFramebufferOES(GL_FRAMEBUFFER_OES, _planeFrameBufferRight);
+    // attach renderbuffer
+    glFramebufferTexture2DOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_TEXTURE_2D, _planeTextureRight, 0);
+    
+    glGenRenderbuffers(1, &_planeDepthBufferRight);
+    glBindRenderbuffer(GL_RENDERBUFFER, _planeDepthBufferRight);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, planeTextureWidth, planeTextureHeight);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _planeDepthBufferRight);
+    
+    GLenum status2 = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    if(status2 != GL_FRAMEBUFFER_COMPLETE)
+        NSLog(@"Framebuffer status: %x", (int)status2);
 #endif
     
     glEnable(GL_DEPTH_TEST);
@@ -351,9 +381,12 @@ GLfloat gCubeMapVertexData[288] =
 
     glDeleteBuffers(1, &_planeVertexBuffer);
     glDeleteVertexArraysOES(1, &_planeVertexArray);
-    glDeleteRenderbuffers(1, &_planeDepthBuffer);
-    glDeleteFramebuffers(1, &_planeFrameBuffer);
-    glDeleteTextures(1, &_planeTexture);
+    glDeleteRenderbuffers(1, &_planeDepthBufferLeft);
+    glDeleteFramebuffers(1, &_planeFrameBufferLeft);
+    glDeleteTextures(1, &_planeTextureLeft);
+    glDeleteRenderbuffers(1, &_planeDepthBufferRight);
+    glDeleteFramebuffers(1, &_planeFrameBufferRight);
+    glDeleteTextures(1, &_planeTextureRight);
     
     if (_skyboxProgram) {
         glDeleteProgram(_skyboxProgram);
@@ -437,24 +470,25 @@ GLfloat gCubeMapVertexData[288] =
     
     _skyboxNormalMatrix = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(modelViewMatrix), NULL);
     _skyboxModelViewProjectionMatrix = GLKMatrix4Multiply(_projectionMatrix, modelViewMatrix);
+    
+    _gameTime += self.timeSinceLastUpdate;
 }
 
-- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
+- (void)drawWorldWithEyeOffset:(float)eyeOffset
 {
-#if DEBUG_PLANE_TEXTURE == 1
-#else
-    glBindFramebufferOES(GL_FRAMEBUFFER_OES, _planeFrameBuffer);
-    glViewport(0, 0, PLANE_TEXTURE_SIZE, PLANE_TEXTURE_SIZE); // weird. On the simulator this is automatic or something
     glClearColor(0.35f, 0.35f, 0.85f, 1.0f); // light blue
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    // Draw cube:
+    // Draw skybox:
     glBindTexture(GL_TEXTURE_2D, _skyboxTexture);
     glBindVertexArrayOES(_skyboxVertexArray);
     glUseProgram(_skyboxProgram);
     glUniformMatrix4fv(cubeUniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _skyboxModelViewProjectionMatrix.m);
     glUniformMatrix3fv(cubeUniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _skyboxNormalMatrix.m);
     glDrawArrays(GL_TRIANGLES, 0, 36);
+    
+    GLKMatrix4 temp = GLKMatrix4MakeTranslation(eyeOffset, 0.0f, 0.0f);
+    GLKMatrix4 eyeBaseModelViewMatrix = GLKMatrix4Multiply(temp, _baseModelViewMatrix);
     
     // draw a floor of cubes!
     glBindTexture(GL_TEXTURE_2D, _simpleTexture);
@@ -466,16 +500,31 @@ GLfloat gCubeMapVertexData[288] =
             const float cubeScale = 0.8f;
             GLKMatrix4 modelViewMatrix = GLKMatrix4MakeTranslation((float)x, (float)y, -1.5f);
             modelViewMatrix = GLKMatrix4Scale(modelViewMatrix, cubeScale, cubeScale, cubeScale);
-            modelViewMatrix = GLKMatrix4Multiply(_baseModelViewMatrix, modelViewMatrix);
+            modelViewMatrix = GLKMatrix4Multiply(eyeBaseModelViewMatrix, modelViewMatrix);
             
-            _skyboxNormalMatrix = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(modelViewMatrix), NULL);
-            _skyboxModelViewProjectionMatrix = GLKMatrix4Multiply(_projectionMatrix, modelViewMatrix);
+            GLKMatrix3 normalMatrix = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(modelViewMatrix), NULL);
+            GLKMatrix4 modelViewProjectionMatrix = GLKMatrix4Multiply(_projectionMatrix, modelViewMatrix);
             
-            glUniformMatrix4fv(cubeUniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _skyboxModelViewProjectionMatrix.m);
-            glUniformMatrix3fv(cubeUniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _skyboxNormalMatrix.m);
+            glUniformMatrix4fv(cubeUniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, modelViewProjectionMatrix.m);
+            glUniformMatrix3fv(cubeUniforms[UNIFORM_NORMAL_MATRIX], 1, 0, normalMatrix.m);
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
     }
+}
+
+- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
+{
+#if DEBUG_PLANE_TEXTURE == 1
+#else
+    //const float ipd = 0.065f; // Typical pupil distance values are 50-70mm
+    // debug animated IPD
+    float ipd = 2.0f*sinf(_gameTime);
+    glBindFramebufferOES(GL_FRAMEBUFFER_OES, _planeFrameBufferLeft);
+    glViewport(0, 0, PLANE_TEXTURE_SIZE, PLANE_TEXTURE_SIZE);
+    [self drawWorldWithEyeOffset: -0.5f*ipd];
+    glBindFramebufferOES(GL_FRAMEBUFFER_OES, _planeFrameBufferRight);
+    glViewport(0, 0, PLANE_TEXTURE_SIZE, PLANE_TEXTURE_SIZE);
+    [self drawWorldWithEyeOffset: 0.5f*ipd];
 #endif
 
     [view bindDrawable]; // glBindFramebufferOES(GL_FRAMEBUFFER_OES, ?);
@@ -483,7 +532,6 @@ GLfloat gCubeMapVertexData[288] =
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     // Draw plane:
-    glBindTexture(GL_TEXTURE_2D, _planeTexture);
     glBindVertexArrayOES(_planeVertexArray);
     glUseProgram(_planeProgram);
     int width = [view drawableWidth];
@@ -491,11 +539,13 @@ GLfloat gCubeMapVertexData[288] =
     glEnable(GL_SCISSOR_TEST);
     
     // left eye:
+    glBindTexture(GL_TEXTURE_2D, _planeTextureLeft);
     glScissor(0, 0, width/2, height);
     glUniformMatrix4fv(planeUniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _planeModelViewProjectionMatrixLeft.m);
     glUniformMatrix3fv(planeUniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _planeNormalMatrixLeft.m);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     // right eye:
+    glBindTexture(GL_TEXTURE_2D, _planeTextureRight);
     glScissor(width/2, 0, width/2, height);
     glUniformMatrix4fv(planeUniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _planeModelViewProjectionMatrixRight.m);
     glUniformMatrix3fv(planeUniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _planeNormalMatrixRight.m);
