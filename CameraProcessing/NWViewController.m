@@ -150,13 +150,22 @@ GLfloat gCubeMapVertexData[288] =
 @interface NWViewController () {
     CMMotionManager* _cmMotionmanager;
 
-    GLKMatrix4 _cubeModelViewProjectionMatrix;
-    GLKMatrix3 _cubeNormalMatrix;
-    float _cubeRotation;
-    GLuint _cubeProgram;
+    GLuint _simpleTexture;
+
+    GLKMatrix4 _projectionMatrix;
+    GLKMatrix4 _baseModelViewMatrix;
+    
+    // Skybox:
+    GLKMatrix4 _skyboxModelViewProjectionMatrix;
+    GLKMatrix3 _skyboxNormalMatrix;
+    GLuint _skyboxProgram;
+    GLuint _skyboxVertexArray;
+    GLuint _skyboxVertexBuffer;
+    GLuint _skyboxTexture;
+    
+    // Cubes!
     GLuint _cubeVertexArray;
     GLuint _cubeVertexBuffer;
-    GLuint _cubeTexture;
 
     GLKMatrix4 _planeModelViewProjectionMatrixLeft;
     GLKMatrix3 _planeNormalMatrixLeft;
@@ -167,6 +176,7 @@ GLfloat gCubeMapVertexData[288] =
     GLuint _planeVertexBuffer;
     GLuint _planeTexture;
     GLuint _planeFrameBuffer; // _planeTexture is rendered-to-texture using _planeFrameBuffer
+    GLuint _planeDepthBuffer;
 }
 @property (strong, nonatomic) EAGLContext *context;
 
@@ -237,7 +247,8 @@ GLfloat gCubeMapVertexData[288] =
     [self loadPlaneShaders];
     
     //_cubeTexture = [self setupTexture: @"simpleTexture.png"];
-    _cubeTexture = [self setupTexture: @"CubemapCrossSquare.png"];
+    _skyboxTexture = [self setupTexture: @"CubemapCrossSquare.png"];
+    _simpleTexture = [self setupTexture:@"simpleTexture.png"];
     
     // we render to _planeTexture using _planeFrameBuffer
 #if DEBUG_PLANE_TEXTURE == 1
@@ -259,17 +270,43 @@ GLfloat gCubeMapVertexData[288] =
     glBindFramebufferOES(GL_FRAMEBUFFER_OES, _planeFrameBuffer);
     // attach renderbuffer
     glFramebufferTexture2DOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_TEXTURE_2D, _planeTexture, 0);
+    
+    glGenRenderbuffers(1, &_planeDepthBuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, _planeDepthBuffer);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, planeTextureWidth, planeTextureHeight);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _planeDepthBuffer);
+    
+    GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    if(status != GL_FRAMEBUFFER_COMPLETE)
+        NSLog(@"Framebuffer status: %x", (int)status);
 #endif
     
     glEnable(GL_DEPTH_TEST);
     
+    // Load vertex array object for skybox:
+    glGenVertexArraysOES(1, &_skyboxVertexArray);
+    glBindVertexArrayOES(_skyboxVertexArray);
+    
+    glGenBuffers(1, &_skyboxVertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, _skyboxVertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(gCubeMapVertexData), gCubeMapVertexData, GL_STATIC_DRAW);
+    
+    glEnableVertexAttribArray(GLKVertexAttribPosition);
+    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(0));
+    glEnableVertexAttribArray(GLKVertexAttribNormal);
+    glVertexAttribPointer(GLKVertexAttribNormal, 3, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(12));
+    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
+    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(24));
+    
+    glBindVertexArrayOES(0);
+
     // Load vertex array object for cube:
     glGenVertexArraysOES(1, &_cubeVertexArray);
     glBindVertexArrayOES(_cubeVertexArray);
     
     glGenBuffers(1, &_cubeVertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, _cubeVertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(gCubeMapVertexData), gCubeMapVertexData, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(gCubeVertexData), gCubeVertexData, GL_STATIC_DRAW);
     
     glEnableVertexAttribArray(GLKVertexAttribPosition);
     glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(0));
@@ -305,19 +342,22 @@ GLfloat gCubeMapVertexData[288] =
     [_cmMotionmanager stopDeviceMotionUpdates];
 
     [EAGLContext setCurrentContext:self.context];
+
+    glDeleteTextures(1, &_simpleTexture);
     
-    glDeleteBuffers(1, &_cubeVertexBuffer);
-    glDeleteVertexArraysOES(1, &_cubeVertexArray);
-    glDeleteTextures(1, &_cubeTexture);
+    glDeleteBuffers(1, &_skyboxVertexBuffer);
+    glDeleteVertexArraysOES(1, &_skyboxVertexArray);
+    glDeleteTextures(1, &_skyboxTexture);
 
     glDeleteBuffers(1, &_planeVertexBuffer);
     glDeleteVertexArraysOES(1, &_planeVertexArray);
+    glDeleteRenderbuffers(1, &_planeDepthBuffer);
     glDeleteFramebuffers(1, &_planeFrameBuffer);
     glDeleteTextures(1, &_planeTexture);
     
-    if (_cubeProgram) {
-        glDeleteProgram(_cubeProgram);
-        _cubeProgram = 0;
+    if (_skyboxProgram) {
+        glDeleteProgram(_skyboxProgram);
+        _skyboxProgram = 0;
     }
     if (_planeProgram) {
         glDeleteProgram(_planeProgram);
@@ -348,7 +388,6 @@ GLfloat gCubeMapVertexData[288] =
     planeModelViewMatrix = GLKMatrix4Scale(planeModelViewMatrix, planeScale, planeScale, planeScale);
     _planeNormalMatrixRight = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(planeModelViewMatrix), NULL);
     _planeModelViewProjectionMatrixRight = GLKMatrix4Multiply(planeProjectionMatrix, planeModelViewMatrix);
-    
     
     GLKMatrix4 deviceMotionAttitudeMatrix;
     if (_cmMotionmanager.deviceMotionActive) {
@@ -386,18 +425,18 @@ GLfloat gCubeMapVertexData[288] =
     }
     
     // Cube matricies:
-    GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(120.0f), 1.0f, 0.1f, 100.0f);
+    _projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(120.0f), 1.0f, 0.1f, 100.0f);
     
-    GLKMatrix4 baseModelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, 0.0f);
-    baseModelViewMatrix = GLKMatrix4Multiply(baseModelViewMatrix, deviceMotionAttitudeMatrix);
+    _baseModelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, 0.0f);
+    _baseModelViewMatrix = GLKMatrix4Multiply(_baseModelViewMatrix, deviceMotionAttitudeMatrix);
 
-    GLKMatrix4 modelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, 0.0f);
-    modelViewMatrix = GLKMatrix4Multiply(baseModelViewMatrix, modelViewMatrix);
+    const float skyboxScale = 10.0f;
+    GLKMatrix4 modelViewMatrix = GLKMatrix4MakeScale(skyboxScale, skyboxScale, skyboxScale);
+    modelViewMatrix = GLKMatrix4Translate(modelViewMatrix, 0.0f, 0.0f, 0.0f);
+    modelViewMatrix = GLKMatrix4Multiply(_baseModelViewMatrix, modelViewMatrix);
     
-    _cubeNormalMatrix = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(modelViewMatrix), NULL);
-    _cubeModelViewProjectionMatrix = GLKMatrix4Multiply(projectionMatrix, modelViewMatrix);
-    
-    _cubeRotation += self.timeSinceLastUpdate * 0.125f;
+    _skyboxNormalMatrix = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(modelViewMatrix), NULL);
+    _skyboxModelViewProjectionMatrix = GLKMatrix4Multiply(_projectionMatrix, modelViewMatrix);
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
@@ -408,20 +447,37 @@ GLfloat gCubeMapVertexData[288] =
     glViewport(0, 0, PLANE_TEXTURE_SIZE, PLANE_TEXTURE_SIZE); // weird. On the simulator this is automatic or something
     glClearColor(0.35f, 0.35f, 0.85f, 1.0f); // light blue
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    // cheesy hack: just do backface culling. There's no depth buffer now but for the single cube I'm drawing this looks fine.
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
     
     // Draw cube:
-    glBindTexture(GL_TEXTURE_2D, _cubeTexture);
-    glBindVertexArrayOES(_cubeVertexArray);
-    glUseProgram(_cubeProgram);
-    glUniformMatrix4fv(cubeUniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _cubeModelViewProjectionMatrix.m);
-    glUniformMatrix3fv(cubeUniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _cubeNormalMatrix.m);
+    glBindTexture(GL_TEXTURE_2D, _skyboxTexture);
+    glBindVertexArrayOES(_skyboxVertexArray);
+    glUseProgram(_skyboxProgram);
+    glUniformMatrix4fv(cubeUniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _skyboxModelViewProjectionMatrix.m);
+    glUniformMatrix3fv(cubeUniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _skyboxNormalMatrix.m);
     glDrawArrays(GL_TRIANGLES, 0, 36);
+    
+    // draw a floor of cubes!
+    glBindTexture(GL_TEXTURE_2D, _simpleTexture);
+    glBindVertexArrayOES(_cubeVertexArray);
+    glUseProgram(_skyboxProgram);
+    for (int x = -10; x < 10; x++) {
+        for (int y = -10; y < 10; y++) {
+            // Cube matricies:
+            const float cubeScale = 0.8f;
+            GLKMatrix4 modelViewMatrix = GLKMatrix4MakeTranslation((float)x, (float)y, -1.5f);
+            modelViewMatrix = GLKMatrix4Scale(modelViewMatrix, cubeScale, cubeScale, cubeScale);
+            modelViewMatrix = GLKMatrix4Multiply(_baseModelViewMatrix, modelViewMatrix);
+            
+            _skyboxNormalMatrix = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(modelViewMatrix), NULL);
+            _skyboxModelViewProjectionMatrix = GLKMatrix4Multiply(_projectionMatrix, modelViewMatrix);
+            
+            glUniformMatrix4fv(cubeUniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _skyboxModelViewProjectionMatrix.m);
+            glUniformMatrix3fv(cubeUniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _skyboxNormalMatrix.m);
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        }
+    }
 #endif
 
-    // TODO: is device framebuffer really 0?
     [view bindDrawable]; // glBindFramebufferOES(GL_FRAMEBUFFER_OES, ?);
     glClearColor(0.65f, 0.65f, 0.65f, 1.0f); // gray
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -452,6 +508,7 @@ GLfloat gCubeMapVertexData[288] =
 - (GLuint)setupTexture:(NSString *)fileName
 {
     // This method from http://stackoverflow.com/q/7930148/2775
+    // TODO: see if this is flipping the texture across the Y axis.
     CGImageRef spriteImage = [UIImage imageNamed:fileName].CGImage;
     if (!spriteImage)
     {
@@ -487,7 +544,7 @@ GLfloat gCubeMapVertexData[288] =
     NSString *vertShaderPathname, *fragShaderPathname;
     
     // Create shader program.
-    _cubeProgram = glCreateProgram();
+    _skyboxProgram = glCreateProgram();
     
     // Create and compile vertex shader.
     vertShaderPathname = [[NSBundle mainBundle] pathForResource:@"SkyboxShader" ofType:@"vsh"];
@@ -504,20 +561,20 @@ GLfloat gCubeMapVertexData[288] =
     }
     
     // Attach vertex shader to program.
-    glAttachShader(_cubeProgram, vertShader);
+    glAttachShader(_skyboxProgram, vertShader);
     
     // Attach fragment shader to program.
-    glAttachShader(_cubeProgram, fragShader);
+    glAttachShader(_skyboxProgram, fragShader);
     
     // Bind attribute locations.
     // This needs to be done prior to linking.
-    glBindAttribLocation(_cubeProgram, GLKVertexAttribPosition, "position");
-    glBindAttribLocation(_cubeProgram, GLKVertexAttribNormal, "normal");
-    glBindAttribLocation(_cubeProgram, GLKVertexAttribTexCoord0, "inputTextureCoordinate");
+    glBindAttribLocation(_skyboxProgram, GLKVertexAttribPosition, "position");
+    glBindAttribLocation(_skyboxProgram, GLKVertexAttribNormal, "normal");
+    glBindAttribLocation(_skyboxProgram, GLKVertexAttribTexCoord0, "inputTextureCoordinate");
     
     // Link program.
-    if (![self linkProgram:_cubeProgram]) {
-        NSLog(@"Failed to link program: %d", _cubeProgram);
+    if (![self linkProgram:_skyboxProgram]) {
+        NSLog(@"Failed to link program: %d", _skyboxProgram);
         
         if (vertShader) {
             glDeleteShader(vertShader);
@@ -527,25 +584,25 @@ GLfloat gCubeMapVertexData[288] =
             glDeleteShader(fragShader);
             fragShader = 0;
         }
-        if (_cubeProgram) {
-            glDeleteProgram(_cubeProgram);
-            _cubeProgram = 0;
+        if (_skyboxProgram) {
+            glDeleteProgram(_skyboxProgram);
+            _skyboxProgram = 0;
         }
         
         return NO;
     }
     
     // Get uniform locations.
-    cubeUniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX] = glGetUniformLocation(_cubeProgram, "modelViewProjectionMatrix");
-    cubeUniforms[UNIFORM_NORMAL_MATRIX] = glGetUniformLocation(_cubeProgram, "normalMatrix");
+    cubeUniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX] = glGetUniformLocation(_skyboxProgram, "modelViewProjectionMatrix");
+    cubeUniforms[UNIFORM_NORMAL_MATRIX] = glGetUniformLocation(_skyboxProgram, "normalMatrix");
     
     // Release vertex and fragment shaders.
     if (vertShader) {
-        glDetachShader(_cubeProgram, vertShader);
+        glDetachShader(_skyboxProgram, vertShader);
         glDeleteShader(vertShader);
     }
     if (fragShader) {
-        glDetachShader(_cubeProgram, fragShader);
+        glDetachShader(_skyboxProgram, fragShader);
         glDeleteShader(fragShader);
     }
     
