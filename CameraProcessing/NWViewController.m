@@ -147,11 +147,24 @@ GLfloat gCubeMapVertexData[288] =
     -1.000000f, 1.000000f, 1.000000f,    1.000000f, 1.000000f, 1.000000f, 0.250064f, 0.250022f
 };
 
+struct NWControllerInputData {
+    BOOL IsConnected;
+    float AxisX;
+    float AxisY;
+    BOOL ButtonDownA;
+    BOOL ButtonDownB;
+    BOOL ButtonDownX;
+    BOOL ButtonDownY;
+    BOOL ButtonDownStick; // Clicking button on left stick.
+    BOOL ButtonDownStart;
+};
+
 @interface NWViewController () {
     CMMotionManager* _cmMotionmanager;
 
     GLuint _simpleTexture;
 
+    GLKVector3 _cameraPosition;
     GLKMatrix4 _projectionMatrix;
     GLKMatrix4 _baseModelViewMatrix;
     
@@ -182,6 +195,9 @@ GLfloat gCubeMapVertexData[288] =
     GLuint _planeDepthBufferRight;
     
     float _gameTime;
+    
+    struct NWControllerInputData _previousInput;
+    struct NWControllerInputData _currentInput;
 }
 @property (strong, nonatomic) EAGLContext *context;
 
@@ -196,6 +212,8 @@ GLfloat gCubeMapVertexData[288] =
 @end
 
 @implementation NWViewController
+
+@synthesize ble;
 
 - (void)viewDidLoad
 {
@@ -212,10 +230,15 @@ GLfloat gCubeMapVertexData[288] =
     view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
     
     [self setupGL];
+    
+    ble = [[BLE alloc] init];
+    [ble controlSetup:1];
+    ble.delegate = self;
 }
 
 - (void)viewDidUnload {
     connectControllerButton = nil;
+    ble = nil;
     [super viewDidUnload];
 }
 
@@ -462,11 +485,25 @@ GLfloat gCubeMapVertexData[288] =
         deviceMotionAttitudeMatrix = GLKMatrix4MakeRotation(-M_PI_2, 1.0f, 0.0f, 0.0f);
     }
     
-    // Cube matricies:
+    
+    // Process controller input...
+    const float maxSpeed = 3.0f;
+    // find new camera position (based on input and camera orientation)
+    GLKVector4 cameraForward4 = GLKMatrix4GetRow(deviceMotionAttitudeMatrix, 2);
+    GLKVector3 cameraForward = GLKVector3Make(-cameraForward4.x, -cameraForward4.y, -cameraForward4.z);
+    GLKVector4 cameraLeft4 = GLKMatrix4GetRow(deviceMotionAttitudeMatrix, 0);
+    GLKVector3 cameraLeft = GLKVector3Make(-cameraLeft4.x, -cameraLeft4.y, -cameraLeft4.z);
+    _cameraPosition = GLKVector3Add(_cameraPosition, GLKVector3MultiplyScalar(cameraForward,                                                                               maxSpeed * self.timeSinceLastUpdate * _currentInput.AxisY));
+    _cameraPosition = GLKVector3Add(_cameraPosition, GLKVector3MultiplyScalar(cameraLeft,                                                                               - maxSpeed * self.timeSinceLastUpdate * _currentInput.AxisX));
+    GLKVector3Make(_currentInput.AxisX, _currentInput.AxisY, 0.0f);
+    
+    
+    // Sky Cube matricies:
     _projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(115.0f), 1.0f, 0.1f, 100.0f);
     
-    _baseModelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, 0.0f);
+    _baseModelViewMatrix = GLKMatrix4MakeTranslation(0.0f,0.0f,0.0f);
     _baseModelViewMatrix = GLKMatrix4Multiply(_baseModelViewMatrix, deviceMotionAttitudeMatrix);
+    _baseModelViewMatrix = GLKMatrix4Translate(_baseModelViewMatrix, -_cameraPosition.x, -_cameraPosition.y, -_cameraPosition.z);
 
     const float skyboxScale = 10.0f;
     GLKMatrix4 modelViewMatrix = GLKMatrix4MakeScale(skyboxScale, skyboxScale, skyboxScale);
@@ -477,6 +514,7 @@ GLfloat gCubeMapVertexData[288] =
     _skyboxModelViewProjectionMatrix = GLKMatrix4Multiply(_projectionMatrix, modelViewMatrix);
     
     _gameTime += self.timeSinceLastUpdate;
+    _previousInput = _currentInput;
 }
 
 - (void)drawWorldWithEyeOffset:(float)eyeOffset
@@ -556,47 +594,47 @@ GLfloat gCubeMapVertexData[288] =
     
     glDisable(GL_SCISSOR_TEST);
     
-    // Draw UI (outside of stereo environment)...
-    
-    
-    float invScale = 1.0f; // ipad 9.7" display
-    //float invScale = 0.814f; // ipad mini 7.9" display
-    
-    // Plane matricies:
-    float aspect = fabsf(self.view.bounds.size.width / self.view.bounds.size.height);
-    // center is 0,0, top is 0,1, bottom is 0,-1, left is -1.333,0 and so-on.
-    GLKMatrix4 uiProjectionMatrix = GLKMatrix4MakeOrtho(-aspect*invScale, aspect*invScale, -invScale, invScale, -invScale, invScale);
-    float buttonScale = 1.0f;
-    GLKMatrix4 buttonModelViewMatrix = GLKMatrix4MakeTranslation(1.0f, 0.0f, 0.75f);
-    buttonModelViewMatrix = GLKMatrix4Scale(buttonModelViewMatrix, buttonScale, buttonScale, buttonScale);
-    GLKMatrix4 buttonModelViewProjectionMatrix = GLKMatrix4Multiply(uiProjectionMatrix, buttonModelViewMatrix);
-
-    // TODO: create UI-specific texture
-    glBindTexture(GL_TEXTURE_2D, _skyboxTexture);
-    // TODO: rename _skyboxProgram to something more like "SingleTextureVertexLightingProgram"
-    glUseProgram(_skyboxProgram);
-    // TODO: create a real system for generating the UI polygons...
-    const float buttonVertexStrip[] = {
-        // x,     y,    z,   r,     g,   b,    u,    v
-        -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-        -0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-        0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-        0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-    };
-    glUseProgram(_skyboxProgram);
-    // Unbind previous buffers, and bind to vertex data in memory which will later change every frame:
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glBindVertexArrayOES(0);
-    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(float)*8, buttonVertexStrip);
-    glEnableVertexAttribArray(GLKVertexAttribPosition);
-    glVertexAttribPointer(GLKVertexAttribColor, 3, GL_FLOAT, GL_FALSE, sizeof(float)*8, &(buttonVertexStrip[3]));
-    glEnableVertexAttribArray(GLKVertexAttribColor);
-    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, sizeof(float)*8, &(buttonVertexStrip[6]));
-    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
-    glUniformMatrix4fv(cubeUniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, buttonModelViewProjectionMatrix.m);
-    glUniformMatrix3fv(cubeUniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _skyboxNormalMatrix.m); // TODO: remove this param.
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+//    // Draw UI (outside of stereo environment)...
+//    
+//    
+//    float invScale = 1.0f; // ipad 9.7" display
+//    //float invScale = 0.814f; // ipad mini 7.9" display
+//    
+//    // Plane matricies:
+//    float aspect = fabsf(self.view.bounds.size.width / self.view.bounds.size.height);
+//    // center is 0,0, top is 0,1, bottom is 0,-1, left is -1.333,0 and so-on.
+//    GLKMatrix4 uiProjectionMatrix = GLKMatrix4MakeOrtho(-aspect*invScale, aspect*invScale, -invScale, invScale, -invScale, invScale);
+//    float buttonScale = 1.0f;
+//    GLKMatrix4 buttonModelViewMatrix = GLKMatrix4MakeTranslation(1.0f, 0.0f, 0.75f);
+//    buttonModelViewMatrix = GLKMatrix4Scale(buttonModelViewMatrix, buttonScale, buttonScale, buttonScale);
+//    GLKMatrix4 buttonModelViewProjectionMatrix = GLKMatrix4Multiply(uiProjectionMatrix, buttonModelViewMatrix);
+//
+//    // TODO: create UI-specific texture
+//    glBindTexture(GL_TEXTURE_2D, _skyboxTexture);
+//    // TODO: rename _skyboxProgram to something more like "SingleTextureVertexLightingProgram"
+//    glUseProgram(_skyboxProgram);
+//    // TODO: create a real system for generating the UI polygons...
+//    const float buttonVertexStrip[] = {
+//        // x,     y,    z,   r,     g,   b,    u,    v
+//        -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+//        -0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+//        0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+//        0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+//    };
+//    glUseProgram(_skyboxProgram);
+//    // Unbind previous buffers, and bind to vertex data in memory which will later change every frame:
+//    glBindBuffer(GL_ARRAY_BUFFER, 0);
+//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+//    glBindVertexArrayOES(0);
+//    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(float)*8, buttonVertexStrip);
+//    glEnableVertexAttribArray(GLKVertexAttribPosition);
+//    glVertexAttribPointer(GLKVertexAttribColor, 3, GL_FLOAT, GL_FALSE, sizeof(float)*8, &(buttonVertexStrip[3]));
+//    glEnableVertexAttribArray(GLKVertexAttribColor);
+//    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, sizeof(float)*8, &(buttonVertexStrip[6]));
+//    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
+//    glUniformMatrix4fv(cubeUniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, buttonModelViewProjectionMatrix.m);
+//    glUniformMatrix3fv(cubeUniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _skyboxNormalMatrix.m); // TODO: remove this param.
+//    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
 #pragma mark -  Load Shaders
@@ -860,9 +898,83 @@ GLfloat gCubeMapVertexData[288] =
 }
 
 #pragma mark - User Input
-// TODO: handle touch input.
-
 - (IBAction)connectControllerButtonTouchUpInside:(id)sender {
-    [connectControllerButton setTitle:@"Pressed!" forState:UIControlStateNormal];
+    if (ble.activePeripheral) {
+        if (ble.activePeripheral.isConnected)
+        {
+            // Disconnect:
+            [[ble CM] cancelPeripheralConnection:[ble activePeripheral]];
+            [connectControllerButton setTitle:@"Connect" forState:UIControlStateNormal];
+            return;
+        }
+    }
+    [connectControllerButton setEnabled:false];
+    [connectControllerButton setTitle:@"Connecting..." forState:UIControlStateDisabled];
+    [ble findBLEPeripherals:2]; // Why is this 2?
+    [NSTimer scheduledTimerWithTimeInterval:2.0f target:self selector:@selector(connectionTimer:) userInfo:nil repeats:NO];
 }
+
+- (void)connectionTimer: (NSTimer *)timer
+{
+    connectControllerButton.enabled = true;
+    [connectControllerButton setTitle:@"Disconnect" forState:UIControlStateNormal];
+    
+    if (ble.peripherals.count > 0)
+    {
+        [ble connectPeripheral:[ble.peripherals objectAtIndex:0]];
+    }
+    else
+    {
+        [connectControllerButton setTitle:@"Connect" forState:UIControlStateNormal];
+    }
+}
+
+#pragma mark - BLE Delagate methods
+- (void)bleDidDisconnect
+{
+    NSLog(@"-->Disconnected");
+    
+    [connectControllerButton setTitle:@"Connect" forState:UIControlStateNormal];
+    
+//    self.RssiLabel.text = @"---";
+    
+    // reset state of all controls
+    struct NWControllerInputData inputData = {};
+    _currentInput = inputData;
+}
+
+-(void)bleDidUpdateRSSI:(NSNumber *)rssi
+{
+//    self.RssiLabel.text = rssi.stringValue;
+}
+
+-(void)bleDidConnect
+{
+    NSLog(@"-->Connected");
+    
+    [connectControllerButton setTitle:@"Disconnect" forState:UIControlStateNormal];
+}
+
+-(void)bleDidReceiveData:(unsigned char *)data length:(int)length
+{
+//    NSLog(@"Length: %d", length);
+    
+    if (length >= 3) {
+        struct NWControllerInputData inputData = {};
+        inputData.IsConnected = true;
+
+        inputData.AxisX = 2.0f * data[0] / 255.0f - 1.0f;
+        inputData.AxisY = 2.0f * data[1] / 255.0f - 1.0f;
+        unsigned char buttons = data[2];        
+        inputData.ButtonDownA = (buttons & 0x01) != 0;
+        inputData.ButtonDownB = (buttons & 0x02) != 0;
+        inputData.ButtonDownX = (buttons & 0x04) != 0;
+        inputData.ButtonDownY = (buttons & 0x08) != 0;
+        inputData.ButtonDownStick = (buttons & 0x10) != 0;
+        inputData.ButtonDownStart = (buttons & 0x20) != 0;
+        
+        _currentInput = inputData;
+    }
+}
+
 @end

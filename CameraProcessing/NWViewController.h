@@ -8,11 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import <GLKit/GLKit.h>
+#import "BLE.h"
 
-@interface NWViewController : GLKViewController
+@interface NWViewController : GLKViewController <BLEDelegate>
 {
-    
     __weak IBOutlet UIButton *connectControllerButton;
 }
+
 - (IBAction)connectControllerButtonTouchUpInside:(id)sender;
+
+@property (strong, nonatomic) BLE *ble;
+
 @end
