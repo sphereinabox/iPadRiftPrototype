@@ -6,7 +6,8 @@
 //  Copyright (c) 2013 Nicholas Winters. All rights reserved.
 //
 
-varying mediump vec2 textureCoordinate;
+varying mediump vec2 fragTextureCoordinate;
+varying mediump vec4 fragColor;
 
 precision mediump float;
 
@@ -14,5 +15,5 @@ uniform sampler2D texture;
 
 void main()
 {
-    gl_FragColor = texture2D(texture, textureCoordinate);
+    gl_FragColor = fragColor * texture2D(texture, fragTextureCoordinate);
 }

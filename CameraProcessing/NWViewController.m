@@ -13,7 +13,7 @@
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 #define DEBUG_PLANE_TEXTURE 0
 
-static const int PLANE_TEXTURE_SIZE = 2048;
+static const int PLANE_TEXTURE_SIZE = 1024;
 
 // Uniform index.
 enum
@@ -29,7 +29,7 @@ GLint planeUniforms[NUM_UNIFORMS];
 enum
 {
     ATTRIB_VERTEX,
-    ATTRIB_NORMAL,
+    ATTRIB_VERTEX_COLOR,
     NUM_ATTRIBUTES
 };
 
@@ -47,49 +47,49 @@ GLfloat gCubeVertexData[288] =
 {
     // Data layout for each line below is:
     // positionX, positionY, positionZ,
-    //                     normalX, normalY, normalZ,
+    //                             R, G, B,
     //                                                 U,   V,
-    0.5f, -0.5f, -0.5f,        1.0f, 0.0f, 0.0f,     0.0f, 0.0f,
-    0.5f, 0.5f, -0.5f,         1.0f, 0.0f, 0.0f,     1.0f, 0.0f,
-    0.5f, -0.5f, 0.5f,         1.0f, 0.0f, 0.0f,     0.0f, 1.0f,
-    0.5f, -0.5f, 0.5f,         1.0f, 0.0f, 0.0f,     0.0f, 1.0f,
-    0.5f, 0.5f, -0.5f,         1.0f, 0.0f, 0.0f,     1.0f, 0.0f,
-    0.5f, 0.5f, 0.5f,          1.0f, 0.0f, 0.0f,     1.0f, 1.0f,
+    0.5f, -0.5f, -0.5f,        1.0f, 1.0f, 1.0f,     0.0f, 0.0f,
+    0.5f, 0.5f, -0.5f,         1.0f, 1.0f, 1.0f,     1.0f, 0.0f,
+    0.5f, -0.5f, 0.5f,         1.0f, 1.0f, 1.0f,     0.0f, 1.0f,
+    0.5f, -0.5f, 0.5f,         1.0f, 1.0f, 1.0f,     0.0f, 1.0f,
+    0.5f, 0.5f, -0.5f,         1.0f, 1.0f, 1.0f,     1.0f, 0.0f,
+    0.5f, 0.5f, 0.5f,          1.0f, 1.0f, 1.0f,     1.0f, 1.0f,
     
-    0.5f, 0.5f, -0.5f,         0.0f, 1.0f, 0.0f,     1.0f, 0.0f,
-    -0.5f, 0.5f, -0.5f,        0.0f, 1.0f, 0.0f,     0.0f, 0.0f,
-    0.5f, 0.5f, 0.5f,          0.0f, 1.0f, 0.0f,     1.0f, 1.0f,
-    0.5f, 0.5f, 0.5f,          0.0f, 1.0f, 0.0f,     1.0f, 1.0f,
-    -0.5f, 0.5f, -0.5f,        0.0f, 1.0f, 0.0f,     0.0f, 0.0f,
-    -0.5f, 0.5f, 0.5f,         0.0f, 1.0f, 0.0f,     0.0f, 1.0f,
+    0.5f, 0.5f, -0.5f,         1.0f, 1.0f, 1.0f,     1.0f, 0.0f,
+    -0.5f, 0.5f, -0.5f,        1.0f, 1.0f, 1.0f,     0.0f, 0.0f,
+    0.5f, 0.5f, 0.5f,          1.0f, 1.0f, 1.0f,     1.0f, 1.0f,
+    0.5f, 0.5f, 0.5f,          1.0f, 1.0f, 1.0f,     1.0f, 1.0f,
+    -0.5f, 0.5f, -0.5f,        1.0f, 1.0f, 1.0f,     0.0f, 0.0f,
+    -0.5f, 0.5f, 0.5f,         1.0f, 1.0f, 1.0f,     0.0f, 1.0f,
     
-    -0.5f, 0.5f, -0.5f,        -1.0f, 0.0f, 0.0f,    1.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f,       -1.0f, 0.0f, 0.0f,    0.0f, 0.0f,
-    -0.5f, 0.5f, 0.5f,         -1.0f, 0.0f, 0.0f,    1.0f, 1.0f,
-    -0.5f, 0.5f, 0.5f,         -1.0f, 0.0f, 0.0f,    1.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,       -1.0f, 0.0f, 0.0f,    0.0f, 0.0f,
-    -0.5f, -0.5f, 0.5f,        -1.0f, 0.0f, 0.0f,    0.0f, 1.0f,
+    -0.5f, 0.5f, -0.5f,        1.0f, 1.0f, 1.0f,    1.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,       1.0f, 1.0f, 1.0f,    0.0f, 0.0f,
+    -0.5f, 0.5f, 0.5f,         1.0f, 1.0f, 1.0f,    1.0f, 1.0f,
+    -0.5f, 0.5f, 0.5f,         1.0f, 1.0f, 1.0f,    1.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,       1.0f, 1.0f, 1.0f,    0.0f, 0.0f,
+    -0.5f, -0.5f, 0.5f,        1.0f, 1.0f, 1.0f,    0.0f, 1.0f,
     
-    -0.5f, -0.5f, -0.5f,       0.0f, -1.0f, 0.0f,    0.0f, 0.0f,
-    0.5f, -0.5f, -0.5f,        0.0f, -1.0f, 0.0f,    1.0f, 0.0f,
-    -0.5f, -0.5f, 0.5f,        0.0f, -1.0f, 0.0f,    0.0f, 1.0f,
-    -0.5f, -0.5f, 0.5f,        0.0f, -1.0f, 0.0f,    0.0f, 1.0f,
-    0.5f, -0.5f, -0.5f,        0.0f, -1.0f, 0.0f,    1.0f, 0.0f,
-    0.5f, -0.5f, 0.5f,         0.0f, -1.0f, 0.0f,    1.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,       1.0f, 1.0f, 1.0f,    0.0f, 0.0f,
+    0.5f, -0.5f, -0.5f,        1.0f, 1.0f, 1.0f,    1.0f, 0.0f,
+    -0.5f, -0.5f, 0.5f,        1.0f, 1.0f, 1.0f,    0.0f, 1.0f,
+    -0.5f, -0.5f, 0.5f,        1.0f, 1.0f, 1.0f,    0.0f, 1.0f,
+    0.5f, -0.5f, -0.5f,        1.0f, 1.0f, 1.0f,    1.0f, 0.0f,
+    0.5f, -0.5f, 0.5f,         1.0f, 1.0f, 1.0f,    1.0f, 1.0f,
     
-    0.5f, 0.5f, 0.5f,          0.0f, 0.0f, 1.0f,     1.0f, 1.0f,
-    -0.5f, 0.5f, 0.5f,         0.0f, 0.0f, 1.0f,     1.0f, 0.0f,
-    0.5f, -0.5f, 0.5f,         0.0f, 0.0f, 1.0f,     0.0f, 1.0f,
-    0.5f, -0.5f, 0.5f,         0.0f, 0.0f, 1.0f,     0.0f, 1.0f,
-    -0.5f, 0.5f, 0.5f,         0.0f, 0.0f, 1.0f,     1.0f, 0.0f,
-    -0.5f, -0.5f, 0.5f,        0.0f, 0.0f, 1.0f,     0.0f, 0.0f,
+    0.5f, 0.5f, 0.5f,          1.0f, 1.0f, 1.0f,    1.0f, 1.0f,
+    -0.5f, 0.5f, 0.5f,         1.0f, 1.0f, 1.0f,    1.0f, 0.0f,
+    0.5f, -0.5f, 0.5f,         1.0f, 1.0f, 1.0f,    0.0f, 1.0f,
+    0.5f, -0.5f, 0.5f,         1.0f, 1.0f, 1.0f,    0.0f, 1.0f,
+    -0.5f, 0.5f, 0.5f,         1.0f, 1.0f, 1.0f,    1.0f, 0.0f,
+    -0.5f, -0.5f, 0.5f,        1.0f, 1.0f, 1.0f,    0.0f, 0.0f,
     
-    0.5f, -0.5f, -0.5f,        0.0f, 0.0f, -1.0f,    1.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f,       0.0f, 0.0f, -1.0f,    0.0f, 0.0f,
-    0.5f, 0.5f, -0.5f,         0.0f, 0.0f, -1.0f,    1.0f, 1.0f,
-    0.5f, 0.5f, -0.5f,         0.0f, 0.0f, -1.0f,    1.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,       0.0f, 0.0f, -1.0f,    0.0f, 0.0f,
-    -0.5f, 0.5f, -0.5f,        0.0f, 0.0f, -1.0f,    0.0f, 1.0f
+    0.5f, -0.5f, -0.5f,        1.0f, 1.0f, 1.0f,    1.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,       1.0f, 1.0f, 1.0f,    0.0f, 0.0f,
+    0.5f, 0.5f, -0.5f,         1.0f, 1.0f, 1.0f,    1.0f, 1.0f,
+    0.5f, 0.5f, -0.5f,         1.0f, 1.0f, 1.0f,    1.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,       1.0f, 1.0f, 1.0f,    0.0f, 0.0f,
+    -0.5f, 0.5f, -0.5f,        1.0f, 1.0f, 1.0f,    0.0f, 1.0f
 };
 
 GLfloat gCubeMapVertexData[288] =
@@ -98,53 +98,53 @@ GLfloat gCubeMapVertexData[288] =
     // positionX, positionY, positionZ,
     //                     normalX, normalY, normalZ,
     //                                                 U,   V,
-    -1.000000f, -1.000000f, 1.000000f,   1.000000f, 0.000000f, -0.000000f, 0.000108f, 0.250021f,
-    -1.000000f, -1.000000f, -1.000000f,   1.000000f, 0.000000f, -0.000000f, 0.000108f, 0.499978f,
-    -1.000000f, 1.000000f, -1.000000f,   1.000000f, 0.000000f, -0.000000f, 0.250064f, 0.499978f,
+    -1.000000f, -1.000000f, 1.000000f,   1.000000f, 1.000000f, 1.000000f, 0.000108f, 0.250021f,
+    -1.000000f, -1.000000f, -1.000000f,  1.000000f, 1.000000f, 1.000000f, 0.000108f, 0.499978f,
+    -1.000000f, 1.000000f, -1.000000f,   1.000000f, 1.000000f, 1.000000f, 0.250064f, 0.499978f,
     
-    -1.000000f, 1.000000f, 1.000000f,   0.000000f, -1.000000f, 0.000000f, 0.250064f, 0.250022f,
-    -1.000000f, 1.000000f, -1.000000f,   0.000000f, -1.000000f, 0.000000f, 0.250064f, 0.499978f,
-    1.000000f, 1.000000f, -1.000000f,   0.000000f, -1.000000f, 0.000000f, 0.500020f, 0.499978f,
+    -1.000000f, 1.000000f, 1.000000f,    1.000000f, 1.000000f, 1.000000f, 0.250064f, 0.250022f,
+    -1.000000f, 1.000000f, -1.000000f,   1.000000f, 1.000000f, 1.000000f, 0.250064f, 0.499978f,
+    1.000000f, 1.000000f, -1.000000f,    1.000000f, 1.000000f, 1.000000f, 0.500020f, 0.499978f,
     
-    1.000000f, 1.000000f, 1.000000f,   -1.000000f, 0.000000f, 0.000000f, 0.500021f, 0.250022f,
-    1.000000f, 1.000000f, -1.000000f,   -1.000000f, 0.000000f, 0.000000f, 0.500020f, 0.499978f,
-    1.000000f, -1.000000f, -1.000000f,   -1.000000f, 0.000000f, 0.000000f, 0.749977f, 0.499979f,
+    1.000000f, 1.000000f, 1.000000f,     1.000000f, 1.000000f, 1.000000f, 0.500021f, 0.250022f,
+    1.000000f, 1.000000f, -1.000000f,    1.000000f, 1.000000f, 1.000000f, 0.500020f, 0.499978f,
+    1.000000f, -1.000000f, -1.000000f,   1.000000f, 1.000000f, 1.000000f, 0.749977f, 0.499979f,
     
-    1.000000f, -1.000000f, -1.000000f,   -0.000000f, 1.000000f, 0.000000f, 0.749977f, 0.499979f,
-    -1.000000f, -1.000000f, -1.000000f,   -0.000000f, 1.000000f, 0.000000f, 0.999935f, 0.499979f,
-    1.000000f, -1.000000f, 1.000000f,   -0.000000f, 1.000000f, 0.000000f, 0.749977f, 0.250022f,
+    1.000000f, -1.000000f, -1.000000f,   1.000000f, 1.000000f, 1.000000f, 0.749977f, 0.499979f,
+    -1.000000f, -1.000000f, -1.000000f,  1.000000f, 1.000000f, 1.000000f, 0.999935f, 0.499979f,
+    1.000000f, -1.000000f, 1.000000f,    1.000000f, 1.000000f, 1.000000f, 0.749977f, 0.250022f,
     
-    -1.000000f, -1.000000f, -1.000000f,   0.000000f, 0.000000f, 1.000000f, 0.250063f, 0.749934f,
-    1.000000f, -1.000000f, -1.000000f,   0.000000f, 0.000000f, 1.000000f, 0.500019f, 0.749935f,
-    1.000000f, 1.000000f, -1.000000f,   0.000000f, 0.000000f, 1.000000f, 0.500020f, 0.499978f,
+    -1.000000f, -1.000000f, -1.000000f,  1.000000f, 1.000000f, 1.000000f, 0.250063f, 0.749934f,
+    1.000000f, -1.000000f, -1.000000f,   1.000000f, 1.000000f, 1.000000f, 0.500019f, 0.749935f,
+    1.000000f, 1.000000f, -1.000000f,    1.000000f, 1.000000f, 1.000000f, 0.500020f, 0.499978f,
     
-    1.000000f, -1.000000f, 1.000000f,   0.000000f, 0.000000f, -1.000000f, 0.500021f, 0.000066f,
-    -1.000000f, -1.000000f, 1.000000f,   0.000000f, 0.000000f, -1.000000f, 0.250065f, 0.000065f,
-    -1.000000f, 1.000000f, 1.000000f,   0.000000f, 0.000000f, -1.000000f, 0.250064f, 0.250022f,
+    1.000000f, -1.000000f, 1.000000f,    1.000000f, 1.000000f, 1.000000f, 0.500021f, 0.000066f,
+    -1.000000f, -1.000000f, 1.000000f,   1.000000f, 1.000000f, 1.000000f, 0.250065f, 0.000065f,
+    -1.000000f, 1.000000f, 1.000000f,    1.000000f, 1.000000f, 1.000000f, 0.250064f, 0.250022f,
     
-    -1.000000f, 1.000000f, 1.000000f,   1.000000f, 0.000000f, -0.000000f, 0.250064f, 0.250022f,
-    -1.000000f, -1.000000f, 1.000000f,   1.000000f, 0.000000f, -0.000000f, 0.000108f, 0.250021f,
-    -1.000000f, 1.000000f, -1.000000f,   1.000000f, 0.000000f, -0.000000f, 0.250064f, 0.499978f,
+    -1.000000f, 1.000000f, 1.000000f,    1.000000f, 1.000000f, 1.000000f, 0.250064f, 0.250022f,
+    -1.000000f, -1.000000f, 1.000000f,   1.000000f, 1.000000f, 1.000000f, 0.000108f, 0.250021f,
+    -1.000000f, 1.000000f, -1.000000f,   1.000000f, 1.000000f, 1.000000f, 0.250064f, 0.499978f,
     
-    1.000000f, 1.000000f, 1.000000f,   0.000000f, -1.000000f, 0.000000f, 0.500021f, 0.250022f,
-    -1.000000f, 1.000000f, 1.000000f,   0.000000f, -1.000000f, 0.000000f, 0.250064f, 0.250022f,
-    1.000000f, 1.000000f, -1.000000f,   0.000000f, -1.000000f, 0.000000f, 0.500020f, 0.499978f,
+    1.000000f, 1.000000f, 1.000000f,     1.000000f, 1.000000f, 1.000000f, 0.500021f, 0.250022f,
+    -1.000000f, 1.000000f, 1.000000f,    1.000000f, 1.000000f, 1.000000f, 0.250064f, 0.250022f,
+    1.000000f, 1.000000f, -1.000000f,    1.000000f, 1.000000f, 1.000000f, 0.500020f, 0.499978f,
     
-    1.000000f, -1.000000f, 1.000000f,   -1.000000f, 0.000000f, 0.000000f, 0.749977f, 0.250022f,
-    1.000000f, 1.000000f, 1.000000f,   -1.000000f, 0.000000f, 0.000000f, 0.500021f, 0.250022f,
-    1.000000f, -1.000000f, -1.000000f,   -1.000000f, 0.000000f, 0.000000f, 0.749977f, 0.499979f,
+    1.000000f, -1.000000f, 1.000000f,    1.000000f, 1.000000f, 1.000000f, 0.749977f, 0.250022f,
+    1.000000f, 1.000000f, 1.000000f,     1.000000f, 1.000000f, 1.000000f, 0.500021f, 0.250022f,
+    1.000000f, -1.000000f, -1.000000f,   1.000000f, 1.000000f, 1.000000f, 0.749977f, 0.499979f,
     
-    1.000000f, -1.000000f, 1.000000f,   -0.000000f, 1.000000f, 0.000000f, 0.749977f, 0.250022f,
-    -1.000000f, -1.000000f, -1.000000f,   -0.000000f, 1.000000f, 0.000000f, 0.999935f, 0.499979f,
-    -1.000000f, -1.000000f, 1.000000f,   -0.000000f, 1.000000f, 0.000000f, 0.999935f, 0.250022f,
+    1.000000f, -1.000000f, 1.000000f,    1.000000f, 1.000000f, 1.000000f, 0.749977f, 0.250022f,
+    -1.000000f, -1.000000f, -1.000000f,  1.000000f, 1.000000f, 1.000000f, 0.999935f, 0.499979f,
+    -1.000000f, -1.000000f, 1.000000f,   1.000000f, 1.000000f, 1.000000f, 0.999935f, 0.250022f,
     
-    -1.000000f, 1.000000f, -1.000000f,   0.000000f, -0.000000f, 1.000000f, 0.250064f, 0.499978f,
-    -1.000000f, -1.000000f, -1.000000f,   0.000000f, -0.000000f, 1.000000f, 0.250063f, 0.749934f,
-    1.000000f, 1.000000f, -1.000000f,   0.000000f, -0.000000f, 1.000000f, 0.500020f, 0.499978f,
+    -1.000000f, 1.000000f, -1.000000f,   1.000000f, 1.000000f, 1.000000f, 0.250064f, 0.499978f,
+    -1.000000f, -1.000000f, -1.000000f,  1.000000f, 1.000000f, 1.000000f, 0.250063f, 0.749934f,
+    1.000000f, 1.000000f, -1.000000f,    1.000000f, 1.000000f, 1.000000f, 0.500020f, 0.499978f,
     
-    1.000000f, 1.000000f, 1.000000f,   0.000000f, 0.000000f, -1.000000f, 0.500021f, 0.250022f,
-    1.000000f, -1.000000f, 1.000000f,   0.000000f, 0.000000f, -1.000000f, 0.500021f, 0.000066f,
-    -1.000000f, 1.000000f, 1.000000f,   0.000000f, 0.000000f, -1.000000f, 0.250064f, 0.250022f
+    1.000000f, 1.000000f, 1.000000f,     1.000000f, 1.000000f, 1.000000f, 0.500021f, 0.250022f,
+    1.000000f, -1.000000f, 1.000000f,    1.000000f, 1.000000f, 1.000000f, 0.500021f, 0.000066f,
+    -1.000000f, 1.000000f, 1.000000f,    1.000000f, 1.000000f, 1.000000f, 0.250064f, 0.250022f
 };
 
 @interface NWViewController () {
@@ -212,6 +212,11 @@ GLfloat gCubeMapVertexData[288] =
     view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
     
     [self setupGL];
+}
+
+- (void)viewDidUnload {
+    connectControllerButton = nil;
+    [super viewDidUnload];
 }
 
 - (void)dealloc
@@ -323,8 +328,8 @@ GLfloat gCubeMapVertexData[288] =
     
     glEnableVertexAttribArray(GLKVertexAttribPosition);
     glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(0));
-    glEnableVertexAttribArray(GLKVertexAttribNormal);
-    glVertexAttribPointer(GLKVertexAttribNormal, 3, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(12));
+    glEnableVertexAttribArray(GLKVertexAttribColor);
+    glVertexAttribPointer(GLKVertexAttribColor, 3, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(12));
     glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
     glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(24));
     
@@ -340,8 +345,8 @@ GLfloat gCubeMapVertexData[288] =
     
     glEnableVertexAttribArray(GLKVertexAttribPosition);
     glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(0));
-    glEnableVertexAttribArray(GLKVertexAttribNormal);
-    glVertexAttribPointer(GLKVertexAttribNormal, 3, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(12));
+    glEnableVertexAttribArray(GLKVertexAttribColor);
+    glVertexAttribPointer(GLKVertexAttribColor, 3, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(12));
     glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
     glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(24));
     
@@ -550,6 +555,48 @@ GLfloat gCubeMapVertexData[288] =
     glDrawArrays(GL_TRIANGLES, 0, 6);
     
     glDisable(GL_SCISSOR_TEST);
+    
+    // Draw UI (outside of stereo environment)...
+    
+    
+    float invScale = 1.0f; // ipad 9.7" display
+    //float invScale = 0.814f; // ipad mini 7.9" display
+    
+    // Plane matricies:
+    float aspect = fabsf(self.view.bounds.size.width / self.view.bounds.size.height);
+    // center is 0,0, top is 0,1, bottom is 0,-1, left is -1.333,0 and so-on.
+    GLKMatrix4 uiProjectionMatrix = GLKMatrix4MakeOrtho(-aspect*invScale, aspect*invScale, -invScale, invScale, -invScale, invScale);
+    float buttonScale = 1.0f;
+    GLKMatrix4 buttonModelViewMatrix = GLKMatrix4MakeTranslation(1.0f, 0.0f, 0.75f);
+    buttonModelViewMatrix = GLKMatrix4Scale(buttonModelViewMatrix, buttonScale, buttonScale, buttonScale);
+    GLKMatrix4 buttonModelViewProjectionMatrix = GLKMatrix4Multiply(uiProjectionMatrix, buttonModelViewMatrix);
+
+    // TODO: create UI-specific texture
+    glBindTexture(GL_TEXTURE_2D, _skyboxTexture);
+    // TODO: rename _skyboxProgram to something more like "SingleTextureVertexLightingProgram"
+    glUseProgram(_skyboxProgram);
+    // TODO: create a real system for generating the UI polygons...
+    const float buttonVertexStrip[] = {
+        // x,     y,    z,   r,     g,   b,    u,    v
+        -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+        0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+    };
+    glUseProgram(_skyboxProgram);
+    // Unbind previous buffers, and bind to vertex data in memory which will later change every frame:
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glBindVertexArrayOES(0);
+    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(float)*8, buttonVertexStrip);
+    glEnableVertexAttribArray(GLKVertexAttribPosition);
+    glVertexAttribPointer(GLKVertexAttribColor, 3, GL_FLOAT, GL_FALSE, sizeof(float)*8, &(buttonVertexStrip[3]));
+    glEnableVertexAttribArray(GLKVertexAttribColor);
+    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, sizeof(float)*8, &(buttonVertexStrip[6]));
+    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
+    glUniformMatrix4fv(cubeUniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, buttonModelViewProjectionMatrix.m);
+    glUniformMatrix3fv(cubeUniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _skyboxNormalMatrix.m); // TODO: remove this param.
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
 #pragma mark -  Load Shaders
@@ -620,8 +667,9 @@ GLfloat gCubeMapVertexData[288] =
     // Bind attribute locations.
     // This needs to be done prior to linking.
     glBindAttribLocation(_skyboxProgram, GLKVertexAttribPosition, "position");
-    glBindAttribLocation(_skyboxProgram, GLKVertexAttribNormal, "normal");
-    glBindAttribLocation(_skyboxProgram, GLKVertexAttribTexCoord0, "inputTextureCoordinate");
+    glBindAttribLocation(_skyboxProgram, GLKVertexAttribColor, "color");
+    // TODO: specify uniform color for "color" instead of using vertex data
+    glBindAttribLocation(_skyboxProgram, GLKVertexAttribTexCoord0, "textureCoordinate");
     
     // Link program.
     if (![self linkProgram:_skyboxProgram]) {
@@ -811,4 +859,10 @@ GLfloat gCubeMapVertexData[288] =
     return YES;
 }
 
+#pragma mark - User Input
+// TODO: handle touch input.
+
+- (IBAction)connectControllerButtonTouchUpInside:(id)sender {
+    [connectControllerButton setTitle:@"Pressed!" forState:UIControlStateNormal];
+}
 @end

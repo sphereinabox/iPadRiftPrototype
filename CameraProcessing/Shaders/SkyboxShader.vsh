@@ -7,17 +7,18 @@
 //
 
 attribute vec4 position;
-attribute vec3 normal; // TODO: remove this, not used.
-attribute mediump vec2 inputTextureCoordinate;
+attribute vec4 color;
+attribute mediump vec2 textureCoordinate;
 
-varying mediump vec2 textureCoordinate;
+varying mediump vec2 fragTextureCoordinate;
+varying mediump vec4 fragColor;
 
 uniform mat4 modelViewProjectionMatrix;
 uniform mat3 normalMatrix; // TODO: remove this, not used.
 
 void main()
 {
-    textureCoordinate = inputTextureCoordinate;
-    vec3 normalTemp = normal;
+    fragTextureCoordinate = textureCoordinate;
+    fragColor = color;
     gl_Position = modelViewProjectionMatrix * position;
 }

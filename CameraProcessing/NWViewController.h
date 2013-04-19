@@ -10,5 +10,9 @@
 #import <GLKit/GLKit.h>
 
 @interface NWViewController : GLKViewController
-
+{
+    
+    __weak IBOutlet UIButton *connectControllerButton;
+}
+- (IBAction)connectControllerButtonTouchUpInside:(id)sender;
 @end

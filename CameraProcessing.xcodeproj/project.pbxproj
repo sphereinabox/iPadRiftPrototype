@@ -12,7 +12,9 @@
 		0102A11B16F3E6150066F5EC /* SkyboxShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 0102A11716F3E1960066F5EC /* SkyboxShader.vsh */; };
 		0102A11F16F41EE90066F5EC /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0102A11E16F41EE90066F5EC /* CoreMotion.framework */; };
 		0104FEFA16EE71DC007656E3 /* Grid.png in Resources */ = {isa = PBXBuildFile; fileRef = 0104FEF916EE71DC007656E3 /* Grid.png */; };
+		0107F86C171F69EB00D86C78 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0107F86B171F69EB00D86C78 /* CoreBluetooth.framework */; };
 		01496D4E168F57C7000694B9 /* simpleTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 01496D4D168F57C7000694B9 /* simpleTexture.png */; };
+		0155190017186EED00074173 /* BLE.m in Sources */ = {isa = PBXBuildFile; fileRef = 015518FE17186EED00074173 /* BLE.m */; };
 		01C238821687DE0A008B8585 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C238811687DE0A008B8585 /* UIKit.framework */; };
 		01C238841687DE0A008B8585 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C238831687DE0A008B8585 /* Foundation.framework */; };
 		01C238861687DE0A008B8585 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C238851687DE0A008B8585 /* CoreGraphics.framework */; };
@@ -37,7 +39,11 @@
 		0102A11716F3E1960066F5EC /* SkyboxShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = SkyboxShader.vsh; path = Shaders/SkyboxShader.vsh; sourceTree = "<group>"; };
 		0102A11E16F41EE90066F5EC /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		0104FEF916EE71DC007656E3 /* Grid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Grid.png; sourceTree = "<group>"; };
+		0107F86B171F69EB00D86C78 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		01496D4D168F57C7000694B9 /* simpleTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = simpleTexture.png; sourceTree = "<group>"; };
+		015518FD17186EED00074173 /* BLE.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLE.h; sourceTree = "<group>"; };
+		015518FE17186EED00074173 /* BLE.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLE.m; sourceTree = "<group>"; };
+		015518FF17186EED00074173 /* BLEDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEDefines.h; sourceTree = "<group>"; };
 		01C2387D1687DE0A008B8585 /* CameraProcessing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CameraProcessing.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01C238811687DE0A008B8585 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		01C238831687DE0A008B8585 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -72,6 +78,7 @@
 				01C238861687DE0A008B8585 /* CoreGraphics.framework in Frameworks */,
 				01C238881687DE0A008B8585 /* GLKit.framework in Frameworks */,
 				01C2388A1687DE0A008B8585 /* OpenGLES.framework in Frameworks */,
+				0107F86C171F69EB00D86C78 /* CoreBluetooth.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,6 +94,17 @@
 				0102A11716F3E1960066F5EC /* SkyboxShader.vsh */,
 			);
 			name = Shaders;
+			sourceTree = "<group>";
+		};
+		015518FC17186EED00074173 /* BLE_Framework */ = {
+			isa = PBXGroup;
+			children = (
+				015518FD17186EED00074173 /* BLE.h */,
+				015518FE17186EED00074173 /* BLE.m */,
+				015518FF17186EED00074173 /* BLEDefines.h */,
+			);
+			name = BLE_Framework;
+			path = Libraries/BLE_Framework;
 			sourceTree = "<group>";
 		};
 		01C238721687DE0A008B8585 = {
@@ -109,12 +127,14 @@
 		01C238801687DE0A008B8585 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				015518FC17186EED00074173 /* BLE_Framework */,
 				0102A11E16F41EE90066F5EC /* CoreMotion.framework */,
 				01C238811687DE0A008B8585 /* UIKit.framework */,
 				01C238831687DE0A008B8585 /* Foundation.framework */,
 				01C238851687DE0A008B8585 /* CoreGraphics.framework */,
 				01C238871687DE0A008B8585 /* GLKit.framework */,
 				01C238891687DE0A008B8585 /* OpenGLES.framework */,
+				0107F86B171F69EB00D86C78 /* CoreBluetooth.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -229,6 +249,7 @@
 				01C238921687DE0A008B8585 /* main.m in Sources */,
 				01C238961687DE0A008B8585 /* NWAppDelegate.m in Sources */,
 				01C238A31687DE0B008B8585 /* NWViewController.m in Sources */,
+				0155190017186EED00074173 /* BLE.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
