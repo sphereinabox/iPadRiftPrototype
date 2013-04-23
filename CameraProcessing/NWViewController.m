@@ -13,7 +13,7 @@
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 #define DEBUG_PLANE_TEXTURE 0
 
-static const int PLANE_TEXTURE_SIZE = 1024;
+static const int PLANE_TEXTURE_SIZE = 1024; // 2048 works, but not reliably at 60fps.
 
 // Uniform index.
 enum
@@ -285,7 +285,8 @@ struct NWControllerInputData {
     
     // we render to _planeTexture using _planeFrameBuffer
 #if DEBUG_PLANE_TEXTURE == 1
-    _planeTexture = [self setupTexture: @"Grid.png"];
+    _planeTextureLeft = [self setupTexture: @"Grid.png"];
+    _planeTextureRight = [self setupTexture: @"Grid.png"];
 #else
     int planeTextureWidth = PLANE_TEXTURE_SIZE;
     int planeTextureHeight = PLANE_TEXTURE_SIZE;
@@ -505,10 +506,11 @@ struct NWControllerInputData {
     _baseModelViewMatrix = GLKMatrix4Multiply(_baseModelViewMatrix, deviceMotionAttitudeMatrix);
     _baseModelViewMatrix = GLKMatrix4Translate(_baseModelViewMatrix, -_cameraPosition.x, -_cameraPosition.y, -_cameraPosition.z);
 
-    const float skyboxScale = 10.0f;
+    const float skyboxScale = 50.0f;
     GLKMatrix4 modelViewMatrix = GLKMatrix4MakeScale(skyboxScale, skyboxScale, skyboxScale);
     modelViewMatrix = GLKMatrix4Translate(modelViewMatrix, 0.0f, 0.0f, 0.0f);
-    modelViewMatrix = GLKMatrix4Multiply(_baseModelViewMatrix, modelViewMatrix);
+    // Skybox ModelView matrix doesn't include the camera translation:
+    modelViewMatrix = GLKMatrix4Multiply(deviceMotionAttitudeMatrix, modelViewMatrix);
     
     _skyboxNormalMatrix = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(modelViewMatrix), NULL);
     _skyboxModelViewProjectionMatrix = GLKMatrix4Multiply(_projectionMatrix, modelViewMatrix);
@@ -530,6 +532,7 @@ struct NWControllerInputData {
     glUniformMatrix3fv(cubeUniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _skyboxNormalMatrix.m);
     glDrawArrays(GL_TRIANGLES, 0, 36);
     
+    // Calculate the per-eye model view matrix:
     GLKMatrix4 temp = GLKMatrix4MakeTranslation(eyeOffset, 0.0f, 0.0f);
     GLKMatrix4 eyeBaseModelViewMatrix = GLKMatrix4Multiply(temp, _baseModelViewMatrix);
     
@@ -537,8 +540,8 @@ struct NWControllerInputData {
     glBindTexture(GL_TEXTURE_2D, _simpleTexture);
     glBindVertexArrayOES(_cubeVertexArray);
     glUseProgram(_skyboxProgram);
-    for (int x = -10; x < 10; x++) {
-        for (int y = -10; y < 10; y++) {
+    for (int x = -10; x < 10; x+=4) {
+        for (int y = -10; y < 10; y+=4) {
             // Cube matricies:
             const float cubeScale = 0.8f;
             GLKMatrix4 modelViewMatrix = GLKMatrix4MakeTranslation((float)x, (float)y, -1.5f);
