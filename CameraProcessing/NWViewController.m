@@ -8,6 +8,7 @@
 
 #import "NWViewController.h"
 #import <CoreMotion/CoreMotion.h>
+#import "NWDeviceHelper.h"
 
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
@@ -18998,6 +18999,7 @@ struct NWControllerInputData {
     GLuint _planeDepthBufferRight;
     
     float _gameTime;
+    float _invDeviceScale; // 1.0 for full size ipad. Smaller to zoom up elements on iPad mini.
     
     struct NWControllerInputData _previousInput;
     struct NWControllerInputData _currentInput;
@@ -19021,6 +19023,12 @@ struct NWControllerInputData {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _invDeviceScale = 1.0f; // Assume iPad
+    if (NWIsDeviceIPadMini()) {
+        _invDeviceScale = 0.814f; // ipad mini 7.9" display
+    }
+    
     
     self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 
@@ -19234,12 +19242,9 @@ struct NWControllerInputData {
 
 - (void)update
 {
-    float invScale = 1.0f; // ipad 9.7" display
-    //float invScale = 0.814f; // ipad mini 7.9" display
-    
     // Plane matricies:
     float aspect = fabsf(self.view.bounds.size.width / self.view.bounds.size.height);
-    GLKMatrix4 planeProjectionMatrix = GLKMatrix4MakeOrtho(-aspect*invScale, aspect*invScale, -invScale, invScale, -invScale, invScale);
+    GLKMatrix4 planeProjectionMatrix = GLKMatrix4MakeOrtho(-aspect*_invDeviceScale, aspect*_invDeviceScale, -_invDeviceScale, _invDeviceScale, -_invDeviceScale, _invDeviceScale);
     float planeScale = 2.0f*0.7f; // 2.0 will scale plane to vertical height of screen
     float planeEyeOffsetX = 2.0f*.15f; // offset from center. 1.0 would offset by vertical height of screen
     float planeEyeOffsetY = -0.05f;
@@ -19400,13 +19405,10 @@ struct NWControllerInputData {
 //    // Draw UI (outside of stereo environment)...
 //    
 //    
-//    float invScale = 1.0f; // ipad 9.7" display
-//    //float invScale = 0.814f; // ipad mini 7.9" display
-//    
 //    // Plane matricies:
 //    float aspect = fabsf(self.view.bounds.size.width / self.view.bounds.size.height);
 //    // center is 0,0, top is 0,1, bottom is 0,-1, left is -1.333,0 and so-on.
-//    GLKMatrix4 uiProjectionMatrix = GLKMatrix4MakeOrtho(-aspect*invScale, aspect*invScale, -invScale, invScale, -invScale, invScale);
+//    GLKMatrix4 uiProjectionMatrix = GLKMatrix4MakeOrtho(-aspect*_invDeviceScale, aspect*_invDeviceScale, -_invDeviceScale, _invDeviceScale, -_invDeviceScale, _invDeviceScale);
 //    float buttonScale = 1.0f;
 //    GLKMatrix4 buttonModelViewMatrix = GLKMatrix4MakeTranslation(1.0f, 0.0f, 0.75f);
 //    buttonModelViewMatrix = GLKMatrix4Scale(buttonModelViewMatrix, buttonScale, buttonScale, buttonScale);

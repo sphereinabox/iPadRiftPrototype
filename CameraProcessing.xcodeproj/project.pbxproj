@@ -16,6 +16,7 @@
 		01496D4E168F57C7000694B9 /* simpleTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 01496D4D168F57C7000694B9 /* simpleTexture.png */; };
 		0155190017186EED00074173 /* BLE.m in Sources */ = {isa = PBXBuildFile; fileRef = 015518FE17186EED00074173 /* BLE.m */; };
 		019BE6DD1726ECC90089A4F2 /* SponzaBakedLightmap.png in Resources */ = {isa = PBXBuildFile; fileRef = 019BE6DC1726ECC90089A4F2 /* SponzaBakedLightmap.png */; };
+		019BE6E0172C96730089A4F2 /* NWDeviceHelper.c in Sources */ = {isa = PBXBuildFile; fileRef = 019BE6DF172C96730089A4F2 /* NWDeviceHelper.c */; };
 		01C238821687DE0A008B8585 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C238811687DE0A008B8585 /* UIKit.framework */; };
 		01C238841687DE0A008B8585 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C238831687DE0A008B8585 /* Foundation.framework */; };
 		01C238861687DE0A008B8585 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C238851687DE0A008B8585 /* CoreGraphics.framework */; };
@@ -46,6 +47,8 @@
 		015518FE17186EED00074173 /* BLE.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLE.m; sourceTree = "<group>"; };
 		015518FF17186EED00074173 /* BLEDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEDefines.h; sourceTree = "<group>"; };
 		019BE6DC1726ECC90089A4F2 /* SponzaBakedLightmap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SponzaBakedLightmap.png; path = ../SponzaBakedLightmap.png; sourceTree = "<group>"; };
+		019BE6DE172C96530089A4F2 /* NWDeviceHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NWDeviceHelper.h; sourceTree = "<group>"; };
+		019BE6DF172C96730089A4F2 /* NWDeviceHelper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = NWDeviceHelper.c; sourceTree = "<group>"; };
 		01C2387D1687DE0A008B8585 /* CameraProcessing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CameraProcessing.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01C238811687DE0A008B8585 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		01C238831687DE0A008B8585 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -156,6 +159,8 @@
 				01C238A41687DE0B008B8585 /* NWViewController_iPhone.xib */,
 				01C238A71687DE0B008B8585 /* NWViewController_iPad.xib */,
 				01C2388C1687DE0A008B8585 /* Supporting Files */,
+				019BE6DE172C96530089A4F2 /* NWDeviceHelper.h */,
+				019BE6DF172C96730089A4F2 /* NWDeviceHelper.c */,
 			);
 			path = CameraProcessing;
 			sourceTree = "<group>";
@@ -254,6 +259,7 @@
 				01C238961687DE0A008B8585 /* NWAppDelegate.m in Sources */,
 				01C238A31687DE0B008B8585 /* NWViewController.m in Sources */,
 				0155190017186EED00074173 /* BLE.m in Sources */,
+				019BE6E0172C96730089A4F2 /* NWDeviceHelper.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
