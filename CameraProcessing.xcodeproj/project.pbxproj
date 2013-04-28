@@ -17,6 +17,10 @@
 		0155190017186EED00074173 /* BLE.m in Sources */ = {isa = PBXBuildFile; fileRef = 015518FE17186EED00074173 /* BLE.m */; };
 		019BE6DD1726ECC90089A4F2 /* SponzaBakedLightmap.png in Resources */ = {isa = PBXBuildFile; fileRef = 019BE6DC1726ECC90089A4F2 /* SponzaBakedLightmap.png */; };
 		019BE6E0172C96730089A4F2 /* NWDeviceHelper.c in Sources */ = {isa = PBXBuildFile; fileRef = 019BE6DF172C96730089A4F2 /* NWDeviceHelper.c */; };
+		019BE6E8172C9E320089A4F2 /* iPadVRIcon114.png in Resources */ = {isa = PBXBuildFile; fileRef = 019BE6E7172C9E320089A4F2 /* iPadVRIcon114.png */; };
+		019BE6EA172C9E370089A4F2 /* iPadVRIcon57.png in Resources */ = {isa = PBXBuildFile; fileRef = 019BE6E9172C9E370089A4F2 /* iPadVRIcon57.png */; };
+		019BE6ED172C9F490089A4F2 /* iPadVRIcon144.png in Resources */ = {isa = PBXBuildFile; fileRef = 019BE6EB172C9F480089A4F2 /* iPadVRIcon144.png */; };
+		019BE6EE172C9F490089A4F2 /* iPadVRIcon72.png in Resources */ = {isa = PBXBuildFile; fileRef = 019BE6EC172C9F480089A4F2 /* iPadVRIcon72.png */; };
 		01C238821687DE0A008B8585 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C238811687DE0A008B8585 /* UIKit.framework */; };
 		01C238841687DE0A008B8585 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C238831687DE0A008B8585 /* Foundation.framework */; };
 		01C238861687DE0A008B8585 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C238851687DE0A008B8585 /* CoreGraphics.framework */; };
@@ -49,7 +53,11 @@
 		019BE6DC1726ECC90089A4F2 /* SponzaBakedLightmap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SponzaBakedLightmap.png; path = ../SponzaBakedLightmap.png; sourceTree = "<group>"; };
 		019BE6DE172C96530089A4F2 /* NWDeviceHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NWDeviceHelper.h; sourceTree = "<group>"; };
 		019BE6DF172C96730089A4F2 /* NWDeviceHelper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = NWDeviceHelper.c; sourceTree = "<group>"; };
-		01C2387D1687DE0A008B8585 /* CameraProcessing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CameraProcessing.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		019BE6E7172C9E320089A4F2 /* iPadVRIcon114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPadVRIcon114.png; sourceTree = "<group>"; };
+		019BE6E9172C9E370089A4F2 /* iPadVRIcon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPadVRIcon57.png; sourceTree = "<group>"; };
+		019BE6EB172C9F480089A4F2 /* iPadVRIcon144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPadVRIcon144.png; sourceTree = "<group>"; };
+		019BE6EC172C9F480089A4F2 /* iPadVRIcon72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPadVRIcon72.png; sourceTree = "<group>"; };
+		01C2387D1687DE0A008B8585 /* iPad VR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iPad VR.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		01C238811687DE0A008B8585 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		01C238831687DE0A008B8585 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		01C238851687DE0A008B8585 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -115,6 +123,10 @@
 		01C238721687DE0A008B8585 = {
 			isa = PBXGroup;
 			children = (
+				019BE6E9172C9E370089A4F2 /* iPadVRIcon57.png */,
+				019BE6E7172C9E320089A4F2 /* iPadVRIcon114.png */,
+				019BE6EB172C9F480089A4F2 /* iPadVRIcon144.png */,
+				019BE6EC172C9F480089A4F2 /* iPadVRIcon72.png */,
 				01C2388B1687DE0A008B8585 /* CameraProcessing */,
 				01C238801687DE0A008B8585 /* Frameworks */,
 				01C2387E1687DE0A008B8585 /* Products */,
@@ -124,7 +136,7 @@
 		01C2387E1687DE0A008B8585 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				01C2387D1687DE0A008B8585 /* CameraProcessing.app */,
+				01C2387D1687DE0A008B8585 /* iPad VR.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -196,7 +208,7 @@
 			);
 			name = CameraProcessing;
 			productName = CameraProcessing;
-			productReference = 01C2387D1687DE0A008B8585 /* CameraProcessing.app */;
+			productReference = 01C2387D1687DE0A008B8585 /* iPad VR.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -245,6 +257,10 @@
 				0104FEFA16EE71DC007656E3 /* Grid.png in Resources */,
 				0102A11416F3B7E50066F5EC /* CubemapCrossSquare.png in Resources */,
 				019BE6DD1726ECC90089A4F2 /* SponzaBakedLightmap.png in Resources */,
+				019BE6E8172C9E320089A4F2 /* iPadVRIcon114.png in Resources */,
+				019BE6EA172C9E370089A4F2 /* iPadVRIcon57.png in Resources */,
+				019BE6ED172C9F490089A4F2 /* iPadVRIcon144.png in Resources */,
+				019BE6EE172C9F490089A4F2 /* iPadVRIcon72.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -317,6 +333,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -339,6 +356,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PRODUCT_NAME = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -352,7 +370,7 @@
 				GCC_PREFIX_HEADER = "CameraProcessing/CameraProcessing-Prefix.pch";
 				INFOPLIST_FILE = "CameraProcessing/CameraProcessing-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "iPad VR";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -364,7 +382,7 @@
 				GCC_PREFIX_HEADER = "CameraProcessing/CameraProcessing-Prefix.pch";
 				INFOPLIST_FILE = "CameraProcessing/CameraProcessing-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "iPad VR";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
