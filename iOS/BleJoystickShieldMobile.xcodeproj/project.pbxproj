@@ -1,0 +1,346 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0155190E1718708900074173 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0155190D1718708900074173 /* UIKit.framework */; };
+		015519101718708900074173 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0155190F1718708900074173 /* Foundation.framework */; };
+		015519121718708900074173 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 015519111718708900074173 /* CoreGraphics.framework */; };
+		015519181718708900074173 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 015519161718708900074173 /* InfoPlist.strings */; };
+		0155191A1718708900074173 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 015519191718708900074173 /* main.m */; };
+		0155191E1718708900074173 /* NWAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0155191D1718708900074173 /* NWAppDelegate.m */; };
+		015519201718708900074173 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 0155191F1718708900074173 /* Default.png */; };
+		015519221718708900074173 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 015519211718708900074173 /* Default@2x.png */; };
+		015519241718708900074173 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 015519231718708900074173 /* Default-568h@2x.png */; };
+		015519271718708900074173 /* NWViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 015519261718708900074173 /* NWViewController.m */; };
+		0155192A1718708900074173 /* NWViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 015519281718708900074173 /* NWViewController_iPhone.xib */; };
+		0155192D1718708900074173 /* NWViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0155192B1718708900074173 /* NWViewController_iPad.xib */; };
+		01551937171870A400074173 /* BLE.m in Sources */ = {isa = PBXBuildFile; fileRef = 01551935171870A400074173 /* BLE.m */; };
+		015519391718767100074173 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 015519381718767100074173 /* CoreBluetooth.framework */; };
+		0155193B171876A300074173 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0155193A171876A300074173 /* CoreBluetooth.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0155190A1718708900074173 /* BleJoystickShieldMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BleJoystickShieldMobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0155190D1718708900074173 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		0155190F1718708900074173 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		015519111718708900074173 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		015519151718708900074173 /* BleJoystickShieldMobile-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BleJoystickShieldMobile-Info.plist"; sourceTree = "<group>"; };
+		015519171718708900074173 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		015519191718708900074173 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		0155191B1718708900074173 /* BleJoystickShieldMobile-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BleJoystickShieldMobile-Prefix.pch"; sourceTree = "<group>"; };
+		0155191C1718708900074173 /* NWAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NWAppDelegate.h; sourceTree = "<group>"; };
+		0155191D1718708900074173 /* NWAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NWAppDelegate.m; sourceTree = "<group>"; };
+		0155191F1718708900074173 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		015519211718708900074173 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		015519231718708900074173 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		015519251718708900074173 /* NWViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NWViewController.h; sourceTree = "<group>"; };
+		015519261718708900074173 /* NWViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NWViewController.m; sourceTree = "<group>"; };
+		015519291718708900074173 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/NWViewController_iPhone.xib; sourceTree = "<group>"; };
+		0155192C1718708900074173 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/NWViewController_iPad.xib; sourceTree = "<group>"; };
+		01551934171870A400074173 /* BLE.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLE.h; sourceTree = "<group>"; };
+		01551935171870A400074173 /* BLE.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLE.m; sourceTree = "<group>"; };
+		01551936171870A400074173 /* BLEDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEDefines.h; sourceTree = "<group>"; };
+		015519381718767100074173 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		0155193A171876A300074173 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		015519071718708900074173 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0155190E1718708900074173 /* UIKit.framework in Frameworks */,
+				015519101718708900074173 /* Foundation.framework in Frameworks */,
+				015519121718708900074173 /* CoreGraphics.framework in Frameworks */,
+				015519391718767100074173 /* CoreBluetooth.framework in Frameworks */,
+				0155193B171876A300074173 /* CoreBluetooth.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		015519011718708900074173 = {
+			isa = PBXGroup;
+			children = (
+				015519381718767100074173 /* CoreBluetooth.framework */,
+				015519131718708900074173 /* BleJoystickShieldMobile */,
+				0155190C1718708900074173 /* Frameworks */,
+				0155190B1718708900074173 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0155190B1718708900074173 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0155190A1718708900074173 /* BleJoystickShieldMobile.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0155190C1718708900074173 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				01551933171870A400074173 /* BLE_Framework */,
+				0155193A171876A300074173 /* CoreBluetooth.framework */,
+				0155190D1718708900074173 /* UIKit.framework */,
+				0155190F1718708900074173 /* Foundation.framework */,
+				015519111718708900074173 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		015519131718708900074173 /* BleJoystickShieldMobile */ = {
+			isa = PBXGroup;
+			children = (
+				0155191C1718708900074173 /* NWAppDelegate.h */,
+				0155191D1718708900074173 /* NWAppDelegate.m */,
+				015519251718708900074173 /* NWViewController.h */,
+				015519261718708900074173 /* NWViewController.m */,
+				015519281718708900074173 /* NWViewController_iPhone.xib */,
+				0155192B1718708900074173 /* NWViewController_iPad.xib */,
+				015519141718708900074173 /* Supporting Files */,
+			);
+			path = BleJoystickShieldMobile;
+			sourceTree = "<group>";
+		};
+		015519141718708900074173 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				015519151718708900074173 /* BleJoystickShieldMobile-Info.plist */,
+				015519161718708900074173 /* InfoPlist.strings */,
+				015519191718708900074173 /* main.m */,
+				0155191B1718708900074173 /* BleJoystickShieldMobile-Prefix.pch */,
+				0155191F1718708900074173 /* Default.png */,
+				015519211718708900074173 /* Default@2x.png */,
+				015519231718708900074173 /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		01551933171870A400074173 /* BLE_Framework */ = {
+			isa = PBXGroup;
+			children = (
+				01551934171870A400074173 /* BLE.h */,
+				01551935171870A400074173 /* BLE.m */,
+				01551936171870A400074173 /* BLEDefines.h */,
+			);
+			path = BLE_Framework;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		015519091718708900074173 /* BleJoystickShieldMobile */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 015519301718708900074173 /* Build configuration list for PBXNativeTarget "BleJoystickShieldMobile" */;
+			buildPhases = (
+				015519061718708900074173 /* Sources */,
+				015519071718708900074173 /* Frameworks */,
+				015519081718708900074173 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BleJoystickShieldMobile;
+			productName = BleJoystickShieldMobile;
+			productReference = 0155190A1718708900074173 /* BleJoystickShieldMobile.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		015519021718708900074173 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = NW;
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "Nicholas Winters";
+			};
+			buildConfigurationList = 015519051718708900074173 /* Build configuration list for PBXProject "BleJoystickShieldMobile" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 015519011718708900074173;
+			productRefGroup = 0155190B1718708900074173 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				015519091718708900074173 /* BleJoystickShieldMobile */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		015519081718708900074173 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				015519181718708900074173 /* InfoPlist.strings in Resources */,
+				015519201718708900074173 /* Default.png in Resources */,
+				015519221718708900074173 /* Default@2x.png in Resources */,
+				015519241718708900074173 /* Default-568h@2x.png in Resources */,
+				0155192A1718708900074173 /* NWViewController_iPhone.xib in Resources */,
+				0155192D1718708900074173 /* NWViewController_iPad.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		015519061718708900074173 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0155191A1718708900074173 /* main.m in Sources */,
+				0155191E1718708900074173 /* NWAppDelegate.m in Sources */,
+				015519271718708900074173 /* NWViewController.m in Sources */,
+				01551937171870A400074173 /* BLE.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		015519161718708900074173 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				015519171718708900074173 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		015519281718708900074173 /* NWViewController_iPhone.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				015519291718708900074173 /* en */,
+			);
+			name = NWViewController_iPhone.xib;
+			sourceTree = "<group>";
+		};
+		0155192B1718708900074173 /* NWViewController_iPad.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0155192C1718708900074173 /* en */,
+			);
+			name = NWViewController_iPad.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		0155192E1718708900074173 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0155192F1718708900074173 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		015519311718708900074173 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BleJoystickShieldMobile/BleJoystickShieldMobile-Prefix.pch";
+				INFOPLIST_FILE = "BleJoystickShieldMobile/BleJoystickShieldMobile-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		015519321718708900074173 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BleJoystickShieldMobile/BleJoystickShieldMobile-Prefix.pch";
+				INFOPLIST_FILE = "BleJoystickShieldMobile/BleJoystickShieldMobile-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		015519051718708900074173 /* Build configuration list for PBXProject "BleJoystickShieldMobile" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0155192E1718708900074173 /* Debug */,
+				0155192F1718708900074173 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		015519301718708900074173 /* Build configuration list for PBXNativeTarget "BleJoystickShieldMobile" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				015519311718708900074173 /* Debug */,
+				015519321718708900074173 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 015519021718708900074173 /* Project object */;
+}
