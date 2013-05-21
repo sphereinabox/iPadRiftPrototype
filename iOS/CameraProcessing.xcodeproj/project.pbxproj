@@ -15,12 +15,12 @@
 		0107F86C171F69EB00D86C78 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0107F86B171F69EB00D86C78 /* CoreBluetooth.framework */; };
 		01496D4E168F57C7000694B9 /* simpleTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 01496D4D168F57C7000694B9 /* simpleTexture.png */; };
 		0155190017186EED00074173 /* BLE.m in Sources */ = {isa = PBXBuildFile; fileRef = 015518FE17186EED00074173 /* BLE.m */; };
-		019BE6DD1726ECC90089A4F2 /* SponzaBakedLightmap.png in Resources */ = {isa = PBXBuildFile; fileRef = 019BE6DC1726ECC90089A4F2 /* SponzaBakedLightmap.png */; };
 		019BE6E0172C96730089A4F2 /* NWDeviceHelper.c in Sources */ = {isa = PBXBuildFile; fileRef = 019BE6DF172C96730089A4F2 /* NWDeviceHelper.c */; };
-		019BE6E8172C9E320089A4F2 /* iPadVRIcon114.png in Resources */ = {isa = PBXBuildFile; fileRef = 019BE6E7172C9E320089A4F2 /* iPadVRIcon114.png */; };
-		019BE6EA172C9E370089A4F2 /* iPadVRIcon57.png in Resources */ = {isa = PBXBuildFile; fileRef = 019BE6E9172C9E370089A4F2 /* iPadVRIcon57.png */; };
-		019BE6ED172C9F490089A4F2 /* iPadVRIcon144.png in Resources */ = {isa = PBXBuildFile; fileRef = 019BE6EB172C9F480089A4F2 /* iPadVRIcon144.png */; };
-		019BE6EE172C9F490089A4F2 /* iPadVRIcon72.png in Resources */ = {isa = PBXBuildFile; fileRef = 019BE6EC172C9F480089A4F2 /* iPadVRIcon72.png */; };
+		01C0E1CB174C02E7003446CE /* iPadVRIcon57.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C0E1C6174C02E7003446CE /* iPadVRIcon57.png */; };
+		01C0E1CC174C02E7003446CE /* iPadVRIcon72.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C0E1C7174C02E7003446CE /* iPadVRIcon72.png */; };
+		01C0E1CD174C02E7003446CE /* iPadVRIcon114.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C0E1C8174C02E7003446CE /* iPadVRIcon114.png */; };
+		01C0E1CE174C02E7003446CE /* iPadVRIcon144.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C0E1C9174C02E7003446CE /* iPadVRIcon144.png */; };
+		01C0E1CF174C02E7003446CE /* SponzaBakedLightmap.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C0E1CA174C02E7003446CE /* SponzaBakedLightmap.png */; };
 		01C238821687DE0A008B8585 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C238811687DE0A008B8585 /* UIKit.framework */; };
 		01C238841687DE0A008B8585 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C238831687DE0A008B8585 /* Foundation.framework */; };
 		01C238861687DE0A008B8585 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C238851687DE0A008B8585 /* CoreGraphics.framework */; };
@@ -50,13 +50,13 @@
 		015518FD17186EED00074173 /* BLE.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLE.h; sourceTree = "<group>"; };
 		015518FE17186EED00074173 /* BLE.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLE.m; sourceTree = "<group>"; };
 		015518FF17186EED00074173 /* BLEDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEDefines.h; sourceTree = "<group>"; };
-		019BE6DC1726ECC90089A4F2 /* SponzaBakedLightmap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SponzaBakedLightmap.png; path = ../SponzaBakedLightmap.png; sourceTree = "<group>"; };
 		019BE6DE172C96530089A4F2 /* NWDeviceHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NWDeviceHelper.h; sourceTree = "<group>"; };
 		019BE6DF172C96730089A4F2 /* NWDeviceHelper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = NWDeviceHelper.c; sourceTree = "<group>"; };
-		019BE6E7172C9E320089A4F2 /* iPadVRIcon114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPadVRIcon114.png; sourceTree = "<group>"; };
-		019BE6E9172C9E370089A4F2 /* iPadVRIcon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPadVRIcon57.png; sourceTree = "<group>"; };
-		019BE6EB172C9F480089A4F2 /* iPadVRIcon144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPadVRIcon144.png; sourceTree = "<group>"; };
-		019BE6EC172C9F480089A4F2 /* iPadVRIcon72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPadVRIcon72.png; sourceTree = "<group>"; };
+		01C0E1C6174C02E7003446CE /* iPadVRIcon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPadVRIcon57.png; sourceTree = "<group>"; };
+		01C0E1C7174C02E7003446CE /* iPadVRIcon72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPadVRIcon72.png; sourceTree = "<group>"; };
+		01C0E1C8174C02E7003446CE /* iPadVRIcon114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPadVRIcon114.png; sourceTree = "<group>"; };
+		01C0E1C9174C02E7003446CE /* iPadVRIcon144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPadVRIcon144.png; sourceTree = "<group>"; };
+		01C0E1CA174C02E7003446CE /* SponzaBakedLightmap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SponzaBakedLightmap.png; sourceTree = "<group>"; };
 		01C2387D1687DE0A008B8585 /* iPad VR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iPad VR.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		01C238811687DE0A008B8585 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		01C238831687DE0A008B8585 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -123,10 +123,6 @@
 		01C238721687DE0A008B8585 = {
 			isa = PBXGroup;
 			children = (
-				019BE6E9172C9E370089A4F2 /* iPadVRIcon57.png */,
-				019BE6E7172C9E320089A4F2 /* iPadVRIcon114.png */,
-				019BE6EB172C9F480089A4F2 /* iPadVRIcon144.png */,
-				019BE6EC172C9F480089A4F2 /* iPadVRIcon72.png */,
 				01C2388B1687DE0A008B8585 /* CameraProcessing */,
 				01C238801687DE0A008B8585 /* Frameworks */,
 				01C2387E1687DE0A008B8585 /* Products */,
@@ -162,7 +158,6 @@
 				0102A11916F3E4D00066F5EC /* Shaders */,
 				0102A11316F3B7E50066F5EC /* CubemapCrossSquare.png */,
 				0104FEF916EE71DC007656E3 /* Grid.png */,
-				019BE6DC1726ECC90089A4F2 /* SponzaBakedLightmap.png */,
 				01496D4D168F57C7000694B9 /* simpleTexture.png */,
 				01C238941687DE0A008B8585 /* NWAppDelegate.h */,
 				01C238951687DE0A008B8585 /* NWAppDelegate.m */,
@@ -173,6 +168,11 @@
 				01C2388C1687DE0A008B8585 /* Supporting Files */,
 				019BE6DE172C96530089A4F2 /* NWDeviceHelper.h */,
 				019BE6DF172C96730089A4F2 /* NWDeviceHelper.c */,
+				01C0E1C6174C02E7003446CE /* iPadVRIcon57.png */,
+				01C0E1C7174C02E7003446CE /* iPadVRIcon72.png */,
+				01C0E1C8174C02E7003446CE /* iPadVRIcon114.png */,
+				01C0E1C9174C02E7003446CE /* iPadVRIcon144.png */,
+				01C0E1CA174C02E7003446CE /* SponzaBakedLightmap.png */,
 			);
 			path = CameraProcessing;
 			sourceTree = "<group>";
@@ -256,11 +256,11 @@
 				01496D4E168F57C7000694B9 /* simpleTexture.png in Resources */,
 				0104FEFA16EE71DC007656E3 /* Grid.png in Resources */,
 				0102A11416F3B7E50066F5EC /* CubemapCrossSquare.png in Resources */,
-				019BE6DD1726ECC90089A4F2 /* SponzaBakedLightmap.png in Resources */,
-				019BE6E8172C9E320089A4F2 /* iPadVRIcon114.png in Resources */,
-				019BE6EA172C9E370089A4F2 /* iPadVRIcon57.png in Resources */,
-				019BE6ED172C9F490089A4F2 /* iPadVRIcon144.png in Resources */,
-				019BE6EE172C9F490089A4F2 /* iPadVRIcon72.png in Resources */,
+				01C0E1CB174C02E7003446CE /* iPadVRIcon57.png in Resources */,
+				01C0E1CC174C02E7003446CE /* iPadVRIcon72.png in Resources */,
+				01C0E1CD174C02E7003446CE /* iPadVRIcon114.png in Resources */,
+				01C0E1CE174C02E7003446CE /* iPadVRIcon144.png in Resources */,
+				01C0E1CF174C02E7003446CE /* SponzaBakedLightmap.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
