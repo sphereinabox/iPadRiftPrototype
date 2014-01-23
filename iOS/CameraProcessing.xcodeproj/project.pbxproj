@@ -13,6 +13,8 @@
 		0102A11F16F41EE90066F5EC /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0102A11E16F41EE90066F5EC /* CoreMotion.framework */; };
 		0104FEFA16EE71DC007656E3 /* Grid.png in Resources */ = {isa = PBXBuildFile; fileRef = 0104FEF916EE71DC007656E3 /* Grid.png */; };
 		0107F86C171F69EB00D86C78 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0107F86B171F69EB00D86C78 /* CoreBluetooth.framework */; };
+		01151AAF178716D600F16FD2 /* NWBleController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01151AAE178716D600F16FD2 /* NWBleController.m */; };
+		01151AB1178717DF00F16FD2 /* FirstPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 01151AB0178717DF00F16FD2 /* FirstPlugin.m */; };
 		01496D4E168F57C7000694B9 /* simpleTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 01496D4D168F57C7000694B9 /* simpleTexture.png */; };
 		0155190017186EED00074173 /* BLE.m in Sources */ = {isa = PBXBuildFile; fileRef = 015518FE17186EED00074173 /* BLE.m */; };
 		019BE6E0172C96730089A4F2 /* NWDeviceHelper.c in Sources */ = {isa = PBXBuildFile; fileRef = 019BE6DF172C96730089A4F2 /* NWDeviceHelper.c */; };
@@ -46,6 +48,10 @@
 		0102A11E16F41EE90066F5EC /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		0104FEF916EE71DC007656E3 /* Grid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Grid.png; sourceTree = "<group>"; };
 		0107F86B171F69EB00D86C78 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		01151AAC1787162A00F16FD2 /* FirstPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FirstPlugin.h; sourceTree = "<group>"; };
+		01151AAD178716D600F16FD2 /* NWBleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NWBleController.h; sourceTree = "<group>"; };
+		01151AAE178716D600F16FD2 /* NWBleController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NWBleController.m; sourceTree = "<group>"; };
+		01151AB0178717DF00F16FD2 /* FirstPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstPlugin.m; sourceTree = "<group>"; };
 		01496D4D168F57C7000694B9 /* simpleTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = simpleTexture.png; sourceTree = "<group>"; };
 		015518FD17186EED00074173 /* BLE.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLE.h; sourceTree = "<group>"; };
 		015518FE17186EED00074173 /* BLE.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLE.m; sourceTree = "<group>"; };
@@ -173,6 +179,10 @@
 				01C0E1C8174C02E7003446CE /* iPadVRIcon114.png */,
 				01C0E1C9174C02E7003446CE /* iPadVRIcon144.png */,
 				01C0E1CA174C02E7003446CE /* SponzaBakedLightmap.png */,
+				01151AAD178716D600F16FD2 /* NWBleController.h */,
+				01151AAE178716D600F16FD2 /* NWBleController.m */,
+				01151AAC1787162A00F16FD2 /* FirstPlugin.h */,
+				01151AB0178717DF00F16FD2 /* FirstPlugin.m */,
 			);
 			path = CameraProcessing;
 			sourceTree = "<group>";
@@ -276,6 +286,8 @@
 				01C238A31687DE0B008B8585 /* NWViewController.m in Sources */,
 				0155190017186EED00074173 /* BLE.m in Sources */,
 				019BE6E0172C96730089A4F2 /* NWDeviceHelper.c in Sources */,
+				01151AAF178716D600F16FD2 /* NWBleController.m in Sources */,
+				01151AB1178717DF00F16FD2 /* FirstPlugin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -366,6 +378,7 @@
 		01C238AD1687DE0B008B8585 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CameraProcessing/CameraProcessing-Prefix.pch";
 				INFOPLIST_FILE = "CameraProcessing/CameraProcessing-Info.plist";
@@ -378,6 +391,7 @@
 		01C238AE1687DE0B008B8585 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CameraProcessing/CameraProcessing-Prefix.pch";
 				INFOPLIST_FILE = "CameraProcessing/CameraProcessing-Info.plist";

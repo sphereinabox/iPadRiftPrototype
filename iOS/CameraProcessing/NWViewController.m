@@ -9,6 +9,7 @@
 #import "NWViewController.h"
 #import <CoreMotion/CoreMotion.h>
 #import "NWDeviceHelper.h"
+#import "FirstPlugin.h"
 
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
@@ -18951,18 +18952,6 @@ GLfloat gCubeMapVertexData[288] =
     -1.000000f, 1.000000f, 1.000000f,    1.000000f, 1.000000f, 1.000000f, 0.250064f, 0.250022f
 };
 
-struct NWControllerInputData {
-    BOOL IsConnected;
-    float AxisX;
-    float AxisY;
-    BOOL ButtonDownA;
-    BOOL ButtonDownB;
-    BOOL ButtonDownX;
-    BOOL ButtonDownY;
-    BOOL ButtonDownStick; // Clicking button on left stick.
-    BOOL ButtonDownStart;
-};
-
 @interface NWViewController () {
     CMMotionManager* _cmMotionmanager;
 
@@ -19001,8 +18990,8 @@ struct NWControllerInputData {
     float _gameTime;
     float _invDeviceScale; // 1.0 for full size ipad. Smaller to zoom up elements on iPad mini.
     
-    struct NWControllerInputData _previousInput;
-    struct NWControllerInputData _currentInput;
+    struct BleControllerState _previousInput;
+    struct BleControllerState _currentInput;
 }
 @property (strong, nonatomic) EAGLContext *context;
 
@@ -19017,8 +19006,6 @@ struct NWControllerInputData {
 @end
 
 @implementation NWViewController
-
-@synthesize ble;
 
 - (void)viewDidLoad
 {
@@ -19041,15 +19028,10 @@ struct NWControllerInputData {
     view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
     
     [self setupGL];
-    
-    ble = [[BLE alloc] init];
-    [ble controlSetup:1];
-    ble.delegate = self;
 }
 
 - (void)viewDidUnload {
     connectControllerButton = nil;
-    ble = nil;
     [super viewDidUnload];
 }
 
@@ -19242,6 +19224,8 @@ struct NWControllerInputData {
 
 - (void)update
 {
+    _currentInput = BleControllerNativeGetStatus();
+    
     // Plane matricies:
     float aspect = fabsf(self.view.bounds.size.width / self.view.bounds.size.height);
     GLKMatrix4 planeProjectionMatrix = GLKMatrix4MakeOrtho(-aspect*_invDeviceScale, aspect*_invDeviceScale, -_invDeviceScale, _invDeviceScale, -_invDeviceScale, _invDeviceScale);
@@ -19704,82 +19688,35 @@ struct NWControllerInputData {
 
 #pragma mark - User Input
 - (IBAction)connectControllerButtonTouchUpInside:(id)sender {
-    if (ble.activePeripheral) {
-        if (ble.activePeripheral.isConnected)
-        {
-            // Disconnect:
-            [[ble CM] cancelPeripheralConnection:[ble activePeripheral]];
-            [connectControllerButton setTitle:@"Connect" forState:UIControlStateNormal];
-            return;
-        }
-    }
-    [connectControllerButton setEnabled:false];
-    [connectControllerButton setTitle:@"Connecting..." forState:UIControlStateDisabled];
-    [ble findBLEPeripherals:2]; // Why is this 2?
-    [NSTimer scheduledTimerWithTimeInterval:2.0f target:self selector:@selector(connectionTimer:) userInfo:nil repeats:NO];
+    BleControllerNativeTryConnect();
+//    if (ble.activePeripheral) {
+//        if (ble.activePeripheral.isConnected)
+//        {
+//            // Disconnect:
+//            [[ble CM] cancelPeripheralConnection:[ble activePeripheral]];
+//            [connectControllerButton setTitle:@"Connect" forState:UIControlStateNormal];
+//            return;
+//        }
+//    }
+//    [connectControllerButton setEnabled:false];
+//    [connectControllerButton setTitle:@"Connecting..." forState:UIControlStateDisabled];
+//    [ble findBLEPeripherals:2]; // Why is this 2?
+//    [NSTimer scheduledTimerWithTimeInterval:2.0f target:self selector:@selector(connectionTimer:) userInfo:nil repeats:NO];
 }
 
-- (void)connectionTimer: (NSTimer *)timer
-{
-    connectControllerButton.enabled = true;
-    [connectControllerButton setTitle:@"Disconnect" forState:UIControlStateNormal];
-    
-    if (ble.peripherals.count > 0)
-    {
-        [ble connectPeripheral:[ble.peripherals objectAtIndex:0]];
-    }
-    else
-    {
-        [connectControllerButton setTitle:@"Connect" forState:UIControlStateNormal];
-    }
-}
-
-#pragma mark - BLE Delagate methods
-- (void)bleDidDisconnect
-{
-    NSLog(@"-->Disconnected");
-    
-    [connectControllerButton setTitle:@"Connect" forState:UIControlStateNormal];
-    
-//    self.RssiLabel.text = @"---";
-    
-    // reset state of all controls
-    struct NWControllerInputData inputData = {};
-    _currentInput = inputData;
-}
-
--(void)bleDidUpdateRSSI:(NSNumber *)rssi
-{
-//    self.RssiLabel.text = rssi.stringValue;
-}
-
--(void)bleDidConnect
-{
-    NSLog(@"-->Connected");
-    
-    [connectControllerButton setTitle:@"Disconnect" forState:UIControlStateNormal];
-}
-
--(void)bleDidReceiveData:(unsigned char *)data length:(int)length
-{
-//    NSLog(@"Length: %d", length);
-    
-    if (length >= 3) {
-        struct NWControllerInputData inputData = {};
-        inputData.IsConnected = true;
-
-        inputData.AxisX = 2.0f * data[0] / 255.0f - 1.0f;
-        inputData.AxisY = 2.0f * data[1] / 255.0f - 1.0f;
-        unsigned char buttons = data[2];        
-        inputData.ButtonDownA = (buttons & 0x01) != 0;
-        inputData.ButtonDownB = (buttons & 0x02) != 0;
-        inputData.ButtonDownX = (buttons & 0x04) != 0;
-        inputData.ButtonDownY = (buttons & 0x08) != 0;
-        inputData.ButtonDownStick = (buttons & 0x10) != 0;
-        inputData.ButtonDownStart = (buttons & 0x20) != 0;
-        
-        _currentInput = inputData;
-    }
-}
+//- (void)connectionTimer: (NSTimer *)timer
+//{
+//    connectControllerButton.enabled = true;
+//    [connectControllerButton setTitle:@"Disconnect" forState:UIControlStateNormal];
+//    
+//    if (ble.peripherals.count > 0)
+//    {
+//        [ble connectPeripheral:[ble.peripherals objectAtIndex:0]];
+//    }
+//    else
+//    {
+//        [connectControllerButton setTitle:@"Connect" forState:UIControlStateNormal];
+//    }
+//}
 
 @end
