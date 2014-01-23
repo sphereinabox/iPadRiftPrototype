@@ -19370,10 +19370,10 @@ struct NWControllerInputData {
     const float ipd = 0.065f; // Typical pupil distance values are 50-70mm
     glBindFramebufferOES(GL_FRAMEBUFFER_OES, _planeFrameBufferLeft);
     glViewport(0, 0, PLANE_TEXTURE_SIZE, PLANE_TEXTURE_SIZE);
-    [self drawWorldWithEyeOffset: -0.5f*ipd];
+    [self drawWorldWithEyeOffset: 0.5f*ipd];
     glBindFramebufferOES(GL_FRAMEBUFFER_OES, _planeFrameBufferRight);
     glViewport(0, 0, PLANE_TEXTURE_SIZE, PLANE_TEXTURE_SIZE);
-    [self drawWorldWithEyeOffset: 0.5f*ipd];
+    [self drawWorldWithEyeOffset: -0.5f*ipd];
 #endif
 
     [view bindDrawable]; // glBindFramebufferOES(GL_FRAMEBUFFER_OES, ?);
